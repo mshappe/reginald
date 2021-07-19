@@ -1,0 +1,7 @@
+tr
+  td= link_to attendee.badge_number, attendee
+  td= attendee.badge_name
+  td= attendee.legal_name
+  td= attendee.preferred_first_name
+  td= attendee.preferred_last_name
+  td[class="#{attendee.aasm.current_state}"]= attendee.aasm.human_state

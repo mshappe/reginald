@@ -51,7 +51,7 @@ class Attendee < ApplicationRecord
     end
 
     event :uncheckin do
-      transitions from: :checked_in, to: :absent
+      transitions to: :absent
     end
 
     event :reissue do

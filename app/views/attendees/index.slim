@@ -1,0 +1,23 @@
+.container
+  .row
+    .col
+      = search_form_for @q do |f|
+        = f.label :badge_name_or_legal_name_cont, class: 'form-label'
+        = f.search_field :badge_name_or_legal_name_cont, class: 'form-control'
+  hr/
+
+  = paginate @attendees
+
+  table.table.table-striped
+    tr
+      th Badge Number
+      th Badge Name
+      th Legal Name
+      th Preferred First Name
+      th Preferred Last Name
+      th Status
+    = render @attendees
+
+  .row
+    .col
+      = link_to "Back to List", attendees_url

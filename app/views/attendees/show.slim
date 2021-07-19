@@ -1,0 +1,79 @@
+.container
+  .card
+    .card-header INSTRUCTIONS
+    .card-body
+      h5.card-title First-time check-in
+      .card-text
+        ol
+          li Ask attendee for ID and proof of COVID-19 vaccination
+          li Verify information below
+          li If everything matches, find the attendee's badge
+          li Click 'Check in!'
+      h5.card-title Lost badge re-issue
+      .card-text
+        strong An attendee can have their badge replaced up to four times
+
+  .row
+    .col
+      h1.display-1= @attendee.badge_name + ' (#' + @attendee.badge_number.to_s + ')'
+  .row
+    .col
+      h2= @attendee.legal_name
+  .row
+    .col-2
+      strong Preferred Name
+    .col
+      = "#{@attendee.preferred_first_name} #{@attendee.preferred_last_name}"
+  .row
+    .col-2
+      strong Email
+    .col
+      = @attendee.email
+    .col-2
+      strong Phone
+    .col
+      = "#{@attendee.area_code} #{@attendee.phone_number}"
+  .row
+    .col-2
+      strong Address
+    .col
+      div= @attendee.address1
+      div= @attendee.address2
+      div= "#{@attendee.city}, #{@attendee.state} #{@attendee.zip}"
+  .row
+    .col-2
+      strong Status
+    .col
+      div[class="#{@attendee.aasm.current_state}"]= @attendee.aasm.human_state
+  .row
+    .col
+      - case @attendee.aasm.current_state
+        - when Attendee::STATE_ABSENT
+          = link_to 'Check In', checkin_attendee_path(@attendee), class: 'btn btn-primary',
+            method: :put
+        - when Attendee::STATE_CHECKED_IN, Attendee::STATE_REISSUED_ONCE, Attendee::STATE_REISSUED_TWICE
+          = link_to 'Reissue', reissue_attendee_path(@attendee), class: 'btn btn-success',
+            method: :put
+        - when Attendee::STATE_REISSUED_THRICE
+          = link_to 'Reissue', reissue_attendee_path(@attendee), class: 'btn btn-warning',
+            data: { confirm: 'THIS IS THE LAST TIME THIS ATTENDEE CAN RECEIVE A REPLACEMENT BADGE!' },
+            method: :put
+        - when Attendee::STATE_LAST_CHANCE
+          strong THIS ATTENDEE MAY NOT RECEIVE AN ADDITIONAL REPLACEMENT BADGE
+        - when Attendee::STATE_EJECTED
+          .ejected THIS ATTENDEE IS BANNED FROM THE CONVENTION
+    - if @attendee.aasm.current_state != Attendee::STATE_EJECTED
+      - if @attendee.aasm.current_state != Attendee::STATE_ABSENT
+        .col
+          = link_to 'This Attendee was checked in by accident!', uncheckin_attendee_path(@attendee),
+            class: 'btn btn-secondary',
+            data: { confirm: 'Are you sure you want to reset this attendee?' },
+            method: :put
+      .col
+        = link_to 'Eject from Convention', eject_attendee_path(@attendee), class: 'btn btn-danger',
+          data: { confirm: 'BE SURE YOU HAVE CONFIRMATION FROM A REGISTRATION OR OPERATIONS HEAD OR A DIRECTOR BEFORE PROCEEDING' },
+          method: :put
+
+  .row
+    .col
+      = link_to "Return to List", attendees_path
