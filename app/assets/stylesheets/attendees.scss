@@ -1,0 +1,9 @@
+// Place all the styles related to the Attendees controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.absent { color: blue }
+.checked_in { color: green }
+.reissued_once, .reissued_twice, .reissued_thrice { color: green }
+.last_chance { background: yellow; color: black }
+.ejected { color: red; font-weight: bold }
