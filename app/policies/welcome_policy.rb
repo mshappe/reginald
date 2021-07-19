@@ -1,4 +1,4 @@
-def WelcomePolicy < ApplicationPolicy
+class WelcomePolicy < ApplicationPolicy
   def index?
     true
   end
