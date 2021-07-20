@@ -1,0 +1,19 @@
+tr
+  td= user.email
+  td= user.name
+  td= user.confirmed?
+  td
+    .row
+      .col
+        - if user.has_role?(:admin) && !current_user.has_role?(:admin)
+          strong Only admins can change admins
+        - elsif user == current_user
+          strong You cannot modify your own roles
+        - else
+          - User::VALID_ROLES.each do |role|
+            - if user.has_role? role
+              = curse_button user, role
+            - else
+              = bless_button user, role
+      .col
+        = link_to 'Edit', edit_user_path(user), class: 'btn btn-warning btn-sm'

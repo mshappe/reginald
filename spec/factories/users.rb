@@ -16,5 +16,23 @@ FactoryBot.define do
         thing.add_role :admin
       end
     end
+
+    trait :when_head do
+      after :create do |thing|
+        thing.add_role :head
+      end
+    end
+
+    trait :when_helpdesk do
+      after :create do |thing|
+        thing.add_role :helpdesk
+      end
+    end
+
+    trait :when_staff do
+      after :create do |thing|
+        thing.add_role :staff
+      end
+    end
   end
 end

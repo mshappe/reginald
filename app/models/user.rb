@@ -33,6 +33,7 @@
 #
 class User < ApplicationRecord
   rolify
+
   # Include default devise modules. Others available are:
   #
   devise :database_authenticatable, :registerable,
@@ -40,4 +41,6 @@ class User < ApplicationRecord
          :confirmable, :lockable, :timeoutable, :trackable#, :omniauthable
 
   validates :email, presence: true, uniqueness: true
+
+  VALID_ROLES = %i(staff helpdesk head admin).freeze
 end

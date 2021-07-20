@@ -14,4 +14,9 @@ Rails.application.routes.draw do
     member { put 'reissue' }
     member { put 'eject' }
   end
+
+  resources :users, except: [:new, :create, :destroy] do
+    member { put 'bless' }
+    member { put 'curse' }
+  end
 end

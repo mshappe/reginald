@@ -1,31 +1,50 @@
 class AttendeePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
+      return scope.none unless user&.has_any_role? :staff, :head, :admin
       scope.all
     end
   end
 
   def index?
-    user.present?
+    blessed?
   end
 
   def show?
-    user.present?
+    blessed?
+  end
+
+  def edit?
+    blessed?
+  end
+
+  def update?
+    blessed?
   end
 
   def checkin?
-    user.present?
+    blessed?
   end
 
   def uncheckin?
-    user.present?
+    blessed?
   end
 
   def reissue?
-    user.present?
+    blessed?
   end
 
   def eject?
-    user.present?
+    super_blessed?
+  end
+
+  protected
+
+  def blessed?
+    user&.has_any_role? :staff, :head, :admin
+  end
+
+  def super_blessed?
+    user&.has_any_role? :head, :admin
   end
 end

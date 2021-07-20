@@ -4,6 +4,7 @@
       = search_form_for @q do |f|
         = f.label :badge_name_or_legal_name_cont, class: 'form-label'
         = f.search_field :badge_name_or_legal_name_cont, class: 'form-control'
+        = f.submit class: 'btn btn-primary'
   hr/
 
   = paginate @attendees

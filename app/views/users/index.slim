@@ -1,0 +1,22 @@
+.container
+  .row
+    .col
+      = search_form_for @q do |f|
+        = f.label :email_cont, class: 'form-label'
+        = f.search_field :email_cont, class: 'form-control'
+
+        = f.label :name_cont, class: 'form-label'
+        = f.search_field :name_cont, class: 'form-control'
+        = f.submit class: 'btn btn-primary'
+
+  hr/
+
+  = paginate @users
+
+  table.table.table-striped
+    tr
+      th Email
+      th Name
+      th Confirmed?
+      th
+    = render @users

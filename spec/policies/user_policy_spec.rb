@@ -1,38 +1,26 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
-RSpec.describe AttendeePolicy, type: :policy do
+RSpec.describe UserPolicy, type: :policies do
+  subject { described_class }
+
   let(:peon) { FactoryBot.create :user }
   let(:staff) { FactoryBot.create :user, :when_staff }
   let(:head) { FactoryBot.create :user, :when_head }
   let(:admin) { FactoryBot.create :user, :when_admin }
 
-  subject { described_class }
-
-  permissions :index?, :show?, :edit?, :update?, :checkin?, :uncheckin?, :reissue? do
-    it { is_expected.to permit staff }
-    it { is_expected.to permit head }
-    it { is_expected.to permit admin }
-
+  # A new user can't do anything here
+  permissions :index?, :show?, :edit?, :update?, :bless? do
     it { is_expected.not_to permit peon }
-    it { is_expected.not_to permit nil }
-  end
-
-  permissions :eject? do
-    it { is_expected.to permit head }
-    it { is_expected.to permit admin }
     it { is_expected.not_to permit staff }
-  end
-
-  permissions :new?, :create?, :destroy? do
-    it { is_expected.not_to permit peon }
-    it { is_expected.not_to permit admin }
-    it { is_expected.not_to permit nil }
+    it { is_expected.to permit head }
+    it { is_expected.to permit admin }
   end
 
   describe 'Scope' do
-    subject(:scope) { Pundit.policy_scope!(user, Attendee) }
+    subject(:scope) { Pundit.policy_scope!(user, User) }
 
-    before { FactoryBot.create_list :attendee, 10 }
+    before { FactoryBot.create_list :user, 10, :when_confirmed }
 
     describe 'anon' do
       let(:user) { nil }
@@ -49,7 +37,7 @@ RSpec.describe AttendeePolicy, type: :policy do
     describe 'staff' do
       let(:user) { staff }
 
-      it { is_expected.not_to be_blank }
+      it { is_expected.to be_blank }
     end
 
     describe 'head' do
@@ -57,5 +45,12 @@ RSpec.describe AttendeePolicy, type: :policy do
 
       it { is_expected.not_to be_blank }
     end
+
+    describe 'admin' do
+      let(:user) { admin }
+
+      it { is_expected.not_to be_blank }
+    end
+
   end
 end

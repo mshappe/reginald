@@ -15,6 +15,9 @@ html
         .collapse.navbar-collapse#navbarSupportedContent
           ul.navbar-nav.me-autho.mb-2.mb-lg-0
             - if current_user.present?
+              - if current_user.has_any_role?(:admin, :head)
+                li.nav-item
+                  = link_to 'Manage Users', users_path, class: 'nav-link'
               li.nav-item
                 = link_to 'Sign out', destroy_user_session_path, class: 'nav-link', method: :delete
             - else
