@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_18_233446) do
+ActiveRecord::Schema.define(version: 2021_07_20_031444) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "attendees", force: :cascade do |t|
     t.integer "event_id"
@@ -37,6 +40,18 @@ ActiveRecord::Schema.define(version: 2021_07_18_233446) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "aasm_state"
+    t.datetime "checked_in_at"
+    t.bigint "checked_in_by"
+    t.datetime "reissued_once_at"
+    t.bigint "reissued_once_by"
+    t.datetime "reissued_twice_at"
+    t.bigint "reissued_twice_by"
+    t.datetime "reissued_thrice_at"
+    t.bigint "reissued_thrise_by"
+    t.datetime "last_chance_at"
+    t.bigint "last_chance_by"
+    t.datetime "ejected_at"
+    t.bigint "ejected_by"
     t.index ["badge_name"], name: "index_attendees_on_badge_name"
     t.index ["badge_number"], name: "index_attendees_on_badge_number"
     t.index ["event_id"], name: "index_attendees_on_event_id"

@@ -14,11 +14,15 @@
         strong An attendee can have their badge replaced up to four times
 
   .row
+    .col-3
+      h2 Badge Name
     .col
-      h1.display-1= @attendee.badge_name + ' (#' + @attendee.badge_number.to_s + ')'
+      h2= @attendee.badge_name + ' (#' + @attendee.badge_number.to_s + ')'
   .row
+    .col-3
+      h3 Legal Name
     .col
-      h2= @attendee.legal_name
+      h3= @attendee.legal_name
   .row
     .col-2
       strong Preferred Name
@@ -70,10 +74,30 @@
             data: { confirm: 'Are you sure you want to reset this attendee?' },
             method: :put
       .col
-        = link_to 'Eject from Convention', eject_attendee_path(@attendee), class: 'btn btn-danger',
-          data: { confirm: 'BE SURE YOU HAVE CONFIRMATION FROM A REGISTRATION OR OPERATIONS HEAD OR A DIRECTOR BEFORE PROCEEDING' },
-          method: :put
+        - if current_user.has_any_role? :head, :admin
+          = link_to 'Eject from Convention', eject_attendee_path(@attendee), class: 'btn btn-danger',
+            data: { confirm: 'BE SURE YOU HAVE CONFIRMATION FROM A REGISTRATION OR OPERATIONS HEAD OR A DIRECTOR BEFORE PROCEEDING' },
+            method: :put
 
   .row
     .col
       = link_to "Return to List", attendees_path
+
+  hr/
+
+  h4 Log
+
+  - Attendee.valid_states.reject { |s| s ==:absent }.each do |state|
+    - at = "#{state}_at".to_sym
+    - by = "#{state}_by".to_sym
+    - if @attendee.send(at).present?
+      .row
+        .col
+          ' transitioned to
+          span>[class="#{state}"]= state
+          ' at
+          span>= @attendee.send(at)
+          - if @attendee.send(by).present?
+            ' by
+            - user = User.find(@attendee.send(by))
+            span= "#{user.name} (#{user.email})"

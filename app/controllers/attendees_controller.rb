@@ -16,22 +16,22 @@ class AttendeesController < ApplicationController
   end
 
   def checkin
-    @attendee.checkin!
+    @attendee.checkin! by: current_user
     redirect_to @attendee
   end
 
   def uncheckin
-    @attendee.uncheckin!
+    @attendee.uncheckin! by: current_user
     redirect_to @attendee
   end
 
   def reissue
-    @attendee.reissue!
+    @attendee.reissue! by: current_user
     redirect_to @attendee
   end
 
   def eject
-    @attendee.eject!
+    @attendee.eject! by: current_user
     redirect_to @attendee
   end
 
