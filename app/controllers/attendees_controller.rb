@@ -26,7 +26,7 @@ class AttendeesController < ApplicationController
   end
 
   def reissue
-    @attendee.reissue! by: current_user
+    @attendee.reissue! by: current_user, pay_type: attendee_params[:pay_type]
     redirect_to @attendee
   end
 
@@ -40,5 +40,10 @@ class AttendeesController < ApplicationController
   def get_attendee
     @attendee = Attendee.find(params[:id])
     authorize @attendee
+  end
+
+  
+  def attendee_params
+    params.require(:attendee).permit(:pay_type)
   end
 end

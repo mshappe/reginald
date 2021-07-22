@@ -9,10 +9,10 @@ Rails.application.routes.draw do
   root to: 'welcome#index'
 
   resources :attendees, only: [:index, :show] do
-    member { put 'checkin' }
-    member { put 'uncheckin' }
-    member { put 'reissue' }
-    member { put 'eject' }
+    member { patch 'checkin' }
+    member { patch 'uncheckin' }
+    member { patch 'reissue' }
+    member { patch 'eject' }
   end
 
   resources :users, except: [:new, :create, :destroy] do
