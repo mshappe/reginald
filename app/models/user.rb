@@ -32,7 +32,9 @@
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
 class User < ApplicationRecord
+  has_paper_trail
   rolify
+
 
   # Include default devise modules. Others available are:
   #

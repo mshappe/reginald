@@ -19,6 +19,8 @@ gem 'kaminari'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'factory_bot_rails'
 gem 'faker'
+gem 'sidekiq'
+gem 'paper_trail'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

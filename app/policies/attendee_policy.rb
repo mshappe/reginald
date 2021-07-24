@@ -38,6 +38,14 @@ class AttendeePolicy < ApplicationPolicy
     super_blessed?
   end
 
+  def importer?
+    import?
+  end
+
+  def import?
+    user.has_role? :admin
+  end
+
   protected
 
   def blessed?

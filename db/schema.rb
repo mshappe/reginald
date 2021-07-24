@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_22_022853) do
+ActiveRecord::Schema.define(version: 2021_07_24_200030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2021_07_22_022853) do
   create_table "attendees", force: :cascade do |t|
     t.integer "event_id"
     t.string "event_name"
-    t.integer "badge_number"
+    t.integer "neon_attendee_id"
     t.boolean "guest_badge"
     t.string "badge_name"
     t.string "emergency_contact"
@@ -55,9 +55,11 @@ ActiveRecord::Schema.define(version: 2021_07_22_022853) do
     t.string "reissued_twice_pay_type"
     t.string "reissued_thrice_pay_type"
     t.string "last_chance_pay_type"
+    t.integer "transaction_id"
+    t.datetime "registered_at"
     t.index ["badge_name"], name: "index_attendees_on_badge_name"
-    t.index ["badge_number"], name: "index_attendees_on_badge_number"
     t.index ["event_id"], name: "index_attendees_on_event_id"
+    t.index ["neon_attendee_id"], name: "index_attendees_on_neon_attendee_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -104,6 +106,17 @@ ActiveRecord::Schema.define(version: 2021_07_22_022853) do
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
 end

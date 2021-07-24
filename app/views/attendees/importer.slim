@@ -1,0 +1,14 @@
+.container
+  .row
+    .col
+      h1 Import Attendees
+      h2.text-danger Warning: This is not destructive. If you import duplicate data, you will get duplicate data.
+      div This will import in the background. Check your mail when it's done.
+  .row
+    .col
+      = form_for :attendee, url: import_attendees_path do |f|
+        = f.label for: :file, class: 'form-label'
+          | File to import
+        = f.file_field :file, class: 'form-control'
+        .col
+          = f.submit class: 'btn btn-danger form-control'
