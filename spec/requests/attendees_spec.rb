@@ -49,14 +49,14 @@ RSpec.describe "Attendees", type: :request do
       it 'works' do
         sign_in user
 
-        put checkin_attendee_path(attendee)
+        patch checkin_attendee_path(attendee)
         expect(response).to redirect_to attendee_path(attendee)
       end
     end
 
     describe 'anonymous' do
       it 'bounces' do
-        put checkin_attendee_path(attendee)
+        patch checkin_attendee_path(attendee)
         expect(response).to redirect_to new_user_session_path
       end
     end
@@ -69,14 +69,14 @@ RSpec.describe "Attendees", type: :request do
       it 'works' do
         sign_in user
 
-        put uncheckin_attendee_path(attendee)
+        patch uncheckin_attendee_path(attendee)
         expect(response).to redirect_to attendee_path(attendee)
       end
     end
 
     describe 'anonymous' do
       it 'bounces' do
-        put uncheckin_attendee_path(attendee)
+        patch uncheckin_attendee_path(attendee)
         expect(response).to redirect_to new_user_session_path
       end
     end
@@ -89,14 +89,14 @@ RSpec.describe "Attendees", type: :request do
       it 'works' do
         sign_in user
 
-        put reissue_attendee_path(attendee)
+        patch reissue_attendee_path(attendee), params: { attendee: { dummy: true } }
         expect(response).to redirect_to attendee_path(attendee)
       end
     end
 
     describe 'anonymous' do
       it 'bounces' do
-        put reissue_attendee_path(attendee)
+        patch reissue_attendee_path(attendee)
         expect(response).to redirect_to new_user_session_path
       end
     end
@@ -109,14 +109,14 @@ RSpec.describe "Attendees", type: :request do
       it 'works' do
         sign_in head
 
-        put eject_attendee_path(attendee)
+        patch eject_attendee_path(attendee)
         expect(response).to redirect_to attendee_path(attendee)
       end
     end
 
     describe 'anonymous' do
       it 'bounces' do
-        put eject_attendee_path(attendee)
+        patch eject_attendee_path(attendee)
         expect(response).to redirect_to new_user_session_path
       end
     end
