@@ -8,7 +8,6 @@
 #  address2                 :string
 #  area_code                :string
 #  badge_name               :string
-#  badge_number             :integer
 #  checked_in_at            :datetime
 #  checked_in_by            :bigint
 #  city                     :string
@@ -27,6 +26,7 @@
 #  phone_number             :string
 #  preferred_first_name     :string
 #  preferred_last_name      :string
+#  registered_at            :datetime
 #  registrant_legal_name    :string
 #  reissued_once_at         :datetime
 #  reissued_once_by         :bigint
@@ -41,16 +41,20 @@
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  event_id                 :integer
+#  neon_attendee_id         :integer
 #  registrant_id            :integer
+#  transaction_id           :integer
 #
 # Indexes
 #
-#  index_attendees_on_badge_name    (badge_name)
-#  index_attendees_on_badge_number  (badge_number)
-#  index_attendees_on_event_id      (event_id)
+#  index_attendees_on_badge_name        (badge_name)
+#  index_attendees_on_event_id          (event_id)
+#  index_attendees_on_neon_attendee_id  (neon_attendee_id)
 #
 class Attendee < ApplicationRecord
   include AASM
+
+  has_paper_trail
 
   aasm timestamps: true do
     state :absent, initial: true, display: "Not Checked In"

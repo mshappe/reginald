@@ -3,6 +3,7 @@ require 'spec_helper'
 RSpec.describe AttendeePolicy, type: :policy do
   let(:peon) { FactoryBot.create :user }
   let(:staff) { FactoryBot.create :user, :when_staff }
+  let (:helpdesk) { FactoryBot.create :user, :when_helpdesk }
   let(:head) { FactoryBot.create :user, :when_head }
   let(:admin) { FactoryBot.create :user, :when_admin }
 
@@ -27,6 +28,14 @@ RSpec.describe AttendeePolicy, type: :policy do
     it { is_expected.not_to permit peon }
     it { is_expected.not_to permit admin }
     it { is_expected.not_to permit nil }
+  end
+
+  permissions :importer?, :import? do
+    it { is_expected.not_to permit peon }
+    it { is_expected.not_to permit head }
+    it { is_expected.not_to permit helpdesk }
+    it { is_expected.not_to permit staff }
+    it { is_expected.to permit admin }
   end
 
   describe 'Scope' do

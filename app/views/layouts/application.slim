@@ -18,6 +18,9 @@ html
               - if current_user.has_any_role?(:admin, :head)
                 li.nav-item
                   = link_to 'Manage Users', users_path, class: 'nav-link'
+              - if current_user.has_role?(:admin)
+                li.nav-item
+                  =link_to 'Import', importer_attendees_path, class: 'nav-link'
               li.nav-item
                 = link_to 'Sign out', destroy_user_session_path, class: 'nav-link', method: :delete
             - else

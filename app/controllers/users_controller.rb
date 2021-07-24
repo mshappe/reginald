@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :get_user, except: :index
+  before_action :set_paper_trail_whodunnit
 
   def index
     @q = policy_scope(User).order(:email).ransack(params[:q])
