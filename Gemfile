@@ -27,6 +27,7 @@ gem 'webpacker', '~> 5.0'
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'rexml'
+  gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-performance'
