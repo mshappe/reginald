@@ -14,7 +14,7 @@ jobs:
           name: Which bundler?
           command: bundle -v
       - ruby/install-deps
-      - node/install-packages
+      - node/install-packages:
         pkg-manager: yarn
         cache-key: "yarn.lock"
   test:
@@ -24,7 +24,7 @@ jobs:
     steps:
       - checkout
       - ruby/install-deps
-      - node/install-packages
+      - node/install-packages:
         pkg-manager: yarn
         cache-key: "yarn.lock"
       - run:
