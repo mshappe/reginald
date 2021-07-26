@@ -17,6 +17,25 @@ class AttendeesController < ApplicationController
 
   def show; end
 
+  def new
+    @attendee = Attendee.new
+  end
+
+  def create
+    @attendee = Attendee.new(attendee_params)
+  end
+
+  def edit
+  end
+
+  def update
+    if @attendee.update!(attendee_params)
+      redirect_to attendee_path(@attendee), notice: 'Attendee updated!'
+    else
+      render :edit, alert: 'Something is not right!'
+    end
+  end
+
   def checkin
     @attendee.checkin! by: current_user
     redirect_to @attendee
@@ -49,6 +68,7 @@ class AttendeesController < ApplicationController
       f.write(@file.read)
     end
     AttendeeImportJob.perform_later(filename.to_s, current_user)
+    redirect_to attendees_path, notice: 'Import in progress'
   end
 
   protected
@@ -59,6 +79,16 @@ class AttendeesController < ApplicationController
   end
 
   def attendee_params
-    params.require(:attendee).permit(:pay_type, :file)
+    permit = [:pay_type, :file]
+
+    if current_user.has_any_role? :helpdesk, :head, :admin
+      permit += [:address1, :address2, :area_code, :badge_name,
+                 :city, :country, :email, :emergency_contact,
+                 :guest_badge, :legal_name, :membership_type,
+                 :phone_number, :preferred_first_name, :preferred_last_name,
+                 :state, :zip]
+    end
+
+    params.require(:attendee).permit(permit)
   end
 end

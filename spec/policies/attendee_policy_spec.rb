@@ -42,9 +42,10 @@ RSpec.describe AttendeePolicy, type: :policy do
     it { is_expected.not_to permit nil }
   end
 
-  permissions :new?, :create?, :destroy? do
+  permissions :new?, :create? do
     it { is_expected.not_to permit peon }
-    it { is_expected.not_to permit admin }
+    it { is_expected.to permit admin }
+    it { is_expected.to permit head }
     it { is_expected.not_to permit nil }
   end
 
@@ -56,6 +57,14 @@ RSpec.describe AttendeePolicy, type: :policy do
     it { is_expected.not_to permit read_only }
     it { is_expected.not_to permit nil }
     it { is_expected.to permit admin }
+  end
+
+  permissions :destroy? do
+    it do
+      [peon, read_only, staff, helpdesk, head, admin].each do |u|
+        is_expected.not_to permit u
+      end
+    end
   end
 
   describe 'Scope' do
