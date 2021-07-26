@@ -36,7 +36,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: Settup DB
-          command: bundle exec rails db:schema:load -trace
+          command: bundle exec rails db:schema:load --trace
       - ruby/rspec-test
 
 workflows:
