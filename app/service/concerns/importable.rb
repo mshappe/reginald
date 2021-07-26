@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Importable
-include ActiveSupport::Concern
+  include ActiveSupport::Concern
 
   COLUMNS = {
     'Event Registration ID' => :transaction_id,
@@ -35,5 +37,5 @@ include ActiveSupport::Concern
     'Membership: First Name (C)' => nil,
     'Membership: Last Name (C)' => nil,
     'Dealer Table Notes (C)' => nil
-  }
+  }.freeze
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Route Map
 #
 
@@ -5,7 +7,7 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   authenticate :user, ->(u) { u.has_role? :admin } do
-    mount Sidekiq::Web => "/sidekiq" # mount Sidekiq::Web in your Rails app
+    mount Sidekiq::Web => '/sidekiq' # mount Sidekiq::Web in your Rails app
   end
 
   devise_for :users, controllers: {
@@ -14,7 +16,7 @@ Rails.application.routes.draw do
   get 'welcome/index'
   root to: 'welcome#index'
 
-  resources :attendees, only: [:index, :show] do
+  resources :attendees, only: %i[index show] do
     member { patch 'checkin' }
     member { patch 'uncheckin' }
     member { patch 'reissue' }
@@ -24,7 +26,7 @@ Rails.application.routes.draw do
     collection { post 'import' }
   end
 
-  resources :users, except: [:new, :create, :destroy] do
+  resources :users, except: %i[new create destroy] do
     member { put 'bless' }
     member { put 'curse' }
   end

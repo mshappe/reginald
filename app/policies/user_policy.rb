@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       return scope.none unless user&.has_any_role? :admin, :head
+
       scope.all
     end
   end
@@ -31,9 +34,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if blessed?
-      %i(name role)
-    end
+    %i[name role] if blessed?
   end
 
   protected

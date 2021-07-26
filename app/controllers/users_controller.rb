@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :get_user, except: :index
   before_action :set_paper_trail_whodunnit
@@ -7,28 +9,27 @@ class UsersController < ApplicationController
     @users = @q.result(distinct: true).page params[:page]
   end
 
-  def show
-  end
+  def show; end
 
   def bless
-    return head :bad_request unless user_params.has_key? :role
+    return head :bad_request unless user_params.key? :role
     return head :not_found unless user_params[:role].to_sym.in? User::VALID_ROLES
+
     @user.add_role user_params[:role].to_sym
     redirect_to users_path
   end
 
   def curse
-    return head :bad_request unless user_params.has_key? :role
+    return head :bad_request unless user_params.key? :role
     return head :not_found unless user_params[:role].to_sym.in? User::VALID_ROLES
+
     @user.remove_role user_params[:role].to_sym
     redirect_to users_path
   end
 
-  def edit
-  end
+  def edit; end
 
-  def update
-  end
+  def update; end
 
   protected
 

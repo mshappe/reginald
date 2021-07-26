@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 RSpec.describe UserPolicy, type: :policies do
@@ -51,6 +52,5 @@ RSpec.describe UserPolicy, type: :policies do
 
       it { is_expected.not_to be_blank }
     end
-
   end
 end

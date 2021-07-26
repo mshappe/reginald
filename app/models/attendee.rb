@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: attendees
@@ -57,7 +59,7 @@ class Attendee < ApplicationRecord
   has_paper_trail
 
   aasm timestamps: true do
-    state :absent, initial: true, display: "Not Checked In"
+    state :absent, initial: true, display: 'Not Checked In'
     state :checked_in, display: 'Checked In'
     state :reissued_once, display: 'Checked In (1st Reissue)'
     state :reissued_twice, display: 'Checked In (2nd Reissue)'
@@ -104,18 +106,8 @@ class Attendee < ApplicationRecord
     by_field = "#{aasm.to_state}_by".to_sym
     pay = args.first[:pay_type]
     pay_field = "#{aasm.to_state}_pay_type".to_sym
-    if by.present?
-      if has_attribute? by_field
-        self[by_field] = by.id
-      end
-    end
+    self[by_field] = by.id if by.present? && (has_attribute? by_field)
 
-    if pay.present?
-      if has_attribute? pay_field
-        self[pay_field] = pay
-      end
-    end
+    self[pay_field] = pay if pay.present? && (has_attribute? pay_field)
   end
-
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -35,14 +37,13 @@ class User < ApplicationRecord
   has_paper_trail
   rolify
 
-
   # Include default devise modules. Others available are:
   #
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :confirmable, :lockable, :timeoutable, :trackable#, :omniauthable
+         :confirmable, :lockable, :timeoutable, :trackable # , :omniauthable
 
   validates :email, presence: true, uniqueness: true
 
-  VALID_ROLES = %i(staff helpdesk head admin).freeze
+  VALID_ROLES = %i[read_only staff helpdesk head admin].freeze
 end
