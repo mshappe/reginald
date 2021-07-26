@@ -1,15 +1,42 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@0.1.2
+  node: cicrleci/node@2
 
 jobs:
   build:
     docker:
-      - image: cimg/ruby:3.0.2
+      - image: cimg/ruby:3.0.2-node
     executor: ruby/default
     steps:
       - checkout
       - run:
           name: Which bundler?
           command: bundle -v
-      - ruby/bundle-install
+      - ruby/install-deps
+      - node/install-packages
+        pkg-manager: yarn
+        cache-key: "yarn.lock"
+  test:
+    docker:
+      - image: cimg/ruby:3.0.2-node
+      - image: circleci/postgres:13-alpine
+    steps:
+      - checkout
+      - ruby/install-deps
+      - node/install-packages
+        pkg-manager: yarn
+        cache-key: "yarn.lock"
+      - run:
+        name: Wait for DB
+        command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - ruby/rspec-test
+
+workflows:
+  version: 2
+  build_and_test:     # The name of our workflow is "build_and_test"
+    jobs:             # The list of jobs we run as part of this workflow.
+      - build         # Run build first.
+      - test:         # Then run test,
+          requires:   # Test requires that build passes for it to run.
+            - build   # Finally, run the build job.
