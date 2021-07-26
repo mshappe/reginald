@@ -7,30 +7,31 @@ html
     = javascript_pack_tag "application", "data-turbolinks-track" => true
 
   body
-    nav.navbar.navbar-expand-lg.navbar-light.bg-light
-      .container-fluid
-        = link_to 'REGINALD', root_url, class: 'navbar-brand'
-        button.navbar-toggler[type='button' data-bs-toggle='collapse' data-bs-target='#nav']
-          span.navbar-toggler-icon
-        .collapse.navbar-collapse#navbarSupportedContent
-          ul.navbar-nav.me-autho.mb-2.mb-lg-0
-            - if current_user.present?
-              - if current_user.has_any_role?(:admin, :head)
+    .container-fluid
+      nav.navbar.navbar-expand-md.navbar-light.bg-light
+        .container-fluid
+          = link_to 'REGINALD', root_url, class: 'navbar-brand'
+          button.navbar-toggler[type='button' data-bs-toggle='collapse' data-bs-target='#navbarMain']
+            span.navbar-toggler-icon
+          #navbarMain.collapse.navbar-collapse
+            ul.navbar-nav.me-autho.mb-2.mb-lg-0
+              - if current_user.present?
+                - if current_user.has_any_role?(:admin, :head)
+                  li.nav-item
+                    = link_to 'Manage Users', users_path, class: 'nav-link'
+                - if current_user.has_role?(:admin)
+                  li.nav-item
+                    =link_to 'Import', importer_attendees_path, class: 'nav-link'
                 li.nav-item
-                  = link_to 'Manage Users', users_path, class: 'nav-link'
-              - if current_user.has_role?(:admin)
+                  = link_to 'Sign out', destroy_user_session_path, class: 'nav-link', method: :delete
+              - else
                 li.nav-item
-                  =link_to 'Import', importer_attendees_path, class: 'nav-link'
-              li.nav-item
-                = link_to 'Sign out', destroy_user_session_path, class: 'nav-link', method: :delete
-            - else
-              li.nav-item
-                = link_to 'Sign in', new_user_session_path, class: 'nav-link'
-              li.nav-item
-                = link_to 'Sign up', new_user_registration_path, class: 'nav-link'
+                  = link_to 'Sign in', new_user_session_path, class: 'nav-link'
+                li.nav-item
+                  = link_to 'Sign up', new_user_registration_path, class: 'nav-link'
 
 
-    .container
+    .container-fluid
       - if flash.notice
         .alert.alert-primary.alert-dismissible.fade.show
           = flash.notice

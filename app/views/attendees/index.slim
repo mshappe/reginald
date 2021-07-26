@@ -1,25 +1,62 @@
-.container
+.container-fluid
+  .card
+    .card-header INSTRUCTIONS
+    .card-body
+      h5.card-title Searching
+      ol
+        li
+          div Fuzzy Search by Badge Name, Legal Name, or Preferred First Name
+          div
+            strong or
+          div Search by exact Badge Number
+        li
+          div On a fuzzy search, you may legitimately get multiple record for the same person if
+          div
+            ul
+              li They registered Guest Of badges (should have Guest Badge marked Yes)
+              li They accidentally bought more than one badge for themselves
+              li They INTENDED to buy a Guest Badge and forgot to mark it as such
+        li Select the correct attendee
+        li Follow the instructions on the attendee display page
+
+  hr /
   .row
     .col
       = search_form_for @q do |f|
-        = f.label :badge_name_or_legal_name_cont, class: 'form-label'
-        = f.search_field :badge_name_or_legal_name_cont, class: 'form-control'
-        = f.submit class: 'btn btn-primary'
+        .row.mb-3
+          .col
+            = f.label :badge_name_or_legal_name_or_preferred_first_name_cont, class: 'form-label'
+            = f.search_field :badge_name_or_legal_name_or_preferred_first_name_cont, class: 'form-control'
+        .row.mb-3
+          .col
+            = f.label :id_eq, class: 'form-label'
+              | Badge number equals
+            = f.search_field :id_eq, class: 'form-control'
+        .row.mb-3
+          .col
+            = f.submit class: 'btn btn-primary'
   hr/
 
   = paginate @attendees
 
-  table.table.table-striped
-    tr
-      th Badge Number
-      th Badge Name
-      th Legal Name
-      th Preferred First Name
-      th Preferred Last Name
-      th Guest Badge?
-      th Registered At
-      th Status
-    = render @attendees
+  .list-group.list-group-horizontal
+    li.list-group-item.text-primary Total Registered: #{Attendee.count}
+    li.list-group-item.text-success Checked in (incl. reissues): #{Attendee.all_check_ins.count}
+    li.list-group-item.text-warning Reissues: #{Attendee.reissues.count}
+    li.list-group-item.text-danger Ejected: #{Attendee.ejected.count}
+
+  .table-responsive
+    table.table.table-striped
+      tr
+        th Badge Number
+        th Badge Name
+        th Legal Name
+        th Preferred First Name
+        th Preferred Last Name
+        th Guest Badge?
+        th Registered At
+        th Status
+      = render @attendees
 
   .row
     .col

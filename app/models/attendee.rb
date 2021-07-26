@@ -89,6 +89,10 @@ class Attendee < ApplicationRecord
     end
   end
 
+  scope :all_check_ins, -> { where aasm_state: Attendee.checked_in_states }
+  scope :reissues, -> { where aasm_state: Attendee.reissued_states }
+  scope :ejected, -> { where aasm_state: Attendee::STATE_EJECTED }
+
   attr_accessor :pay_type, :dummy
 
   def self.valid_states
@@ -97,6 +101,14 @@ class Attendee < ApplicationRecord
 
   def self.pay_states
     [Attendee::STATE_REISSUED_ONCE, Attendee::STATE_REISSUED_TWICE, Attendee::STATE_REISSUED_THRICE]
+  end
+
+  def self.reissued_states
+    Attendee.pay_states + [Attendee::STATE_LAST_CHANCE]
+  end
+
+  def self.checked_in_states
+    [Attendee::STATE_CHECKED_IN] + Attendee.reissued_states
   end
 
   protected
