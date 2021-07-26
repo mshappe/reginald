@@ -22,7 +22,17 @@ RSpec.describe AttendeePolicy, type: :policy do
     it { is_expected.not_to permit nil }
   end
 
-  permissions :edit?, :update?, :checkin?, :uncheckin?, :reissue? do
+  permissions :edit?, :update? do
+    it { is_expected.not_to permit staff }
+    it { is_expected.to permit head }
+    it { is_expected.to permit admin }
+
+    it { is_expected.not_to permit read_only }
+    it { is_expected.not_to permit peon }
+    it { is_expected.not_to permit nil }
+  end
+
+  permissions :checkin?, :uncheckin?, :reissue? do
     it { is_expected.to permit staff }
     it { is_expected.to permit head }
     it { is_expected.to permit admin }
