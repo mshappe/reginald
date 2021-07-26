@@ -142,13 +142,21 @@
               data: { confirm: 'BE SURE YOU HAVE CONFIRMATION FROM A REGISTRATION OR OPERATIONS HEAD OR A DIRECTOR BEFORE PROCEEDING' },
               method: :patch
 
+    - if current_user&.can_transfer?
+      .row
+        .col
+          - label = 'Transfer / Edit'
+          - label += ' / Assign Guest' if @attendee.guest_badge?
+          = link_to label, edit_attendee_path(@attendee), class: 'btn btn-warning',
+            data: { confirm: 'At-con transfers and edits should be vetted by a Department Head or Director' }
+
     .row
       .col
         = link_to "Return to List", attendees_path
 
     hr/
 
-    h4 Log
+    h4 Transition Log
 
     - Attendee.valid_states.reject { |s| s ==:absent }.each do |state|
       - at = "#{state}_at".to_sym
@@ -156,15 +164,37 @@
       - pay = "#{state}_pay_type".to_sym
       - if @attendee.send(at).present?
         .row
+          .col-2
+            strong= @attendee.send(at)
           .col
-            ' transitioned to
-            span>[class="#{state}"]= state
-            ' at
-            span>= @attendee.send(at)
+            div
+              strong> Transitioned to
+              span>[class="#{state}"]= state
             - if @attendee.send(by).present?
-              ' by
-              - user = User.find(@attendee.send(by))
-              span>= "#{user.name} (#{user.email})"
+              div
+                strong> by
+                - user = User.find(@attendee.send(by))
+                span>= "#{user.name} (#{user.email})"
             - if @attendee.respond_to?(pay) && @attendee.send(pay).present?
-              ' paid $5
-              span= @attendee.send(pay)
+              div
+                strong> paid $5
+                span= @attendee.send(pay)
+
+    h4.mt-5 Edit Log
+    - edit_keys = %w(legal_name badge_name preferred_first_name preferred_last_name email guest_badge).freeze
+    - @attendee.versions.where(event: 'update').each do |a|
+      - next if (a.changeset.keys & edit_keys).empty?
+      .row
+        .col-2
+          strong= a.created_at
+        - edit_keys.each do |f|
+          - if a.changeset[f].present?
+            .col
+              div
+                strong #{f.humanize} Changed
+              div
+                strong> From
+                | #{a.changeset[f].first}
+              div
+                strong> To
+                | #{a.changeset[f].last}

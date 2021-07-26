@@ -2,6 +2,7 @@ class AttendeePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       return scope.none unless user&.has_any_role? :staff, :head, :admin
+
       scope.all
     end
   end
@@ -14,12 +15,20 @@ class AttendeePolicy < ApplicationPolicy
     semi_charmed? || blessed?
   end
 
+  def new?
+    super_blessed?
+  end
+
+  def create?
+    super_blessed?
+  end
+
   def edit?
-    blessed?
+    user&.can_transfer?
   end
 
   def update?
-    blessed?
+    user&.can_transfer?
   end
 
   def checkin?
@@ -53,7 +62,7 @@ class AttendeePolicy < ApplicationPolicy
   end
 
   def blessed?
-    user&.has_any_role? :staff, :head, :admin
+    user&.has_any_role? :staff, :helpdesk, :head, :admin
   end
 
   def super_blessed?

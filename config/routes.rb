@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get 'welcome/index'
   root to: 'welcome#index'
 
-  resources :attendees, only: %i[index show] do
+  resources :attendees, except: :destroy do
     member { patch 'checkin' }
     member { patch 'uncheckin' }
     member { patch 'reissue' }

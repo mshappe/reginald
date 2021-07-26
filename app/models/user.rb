@@ -45,5 +45,9 @@ class User < ApplicationRecord
 
   validates :email, presence: true, uniqueness: true
 
+  def can_transfer?
+    has_any_role? :helpdesk, :head, :admin
+  end
+
   VALID_ROLES = %i[read_only staff helpdesk head admin].freeze
 end
