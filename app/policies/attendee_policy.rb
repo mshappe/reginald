@@ -2,6 +2,7 @@ class AttendeePolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       return scope.none unless user&.has_any_role? :staff, :head, :admin
+
       scope.all
     end
   end

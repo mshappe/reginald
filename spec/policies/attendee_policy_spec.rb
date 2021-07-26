@@ -62,7 +62,7 @@ RSpec.describe AttendeePolicy, type: :policy do
   permissions :destroy? do
     it do
       [peon, read_only, staff, helpdesk, head, admin].each do |u|
-        is_expected.not_to permit u
+        expect(subject).not_to permit u
       end
     end
   end

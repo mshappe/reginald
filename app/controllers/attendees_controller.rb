@@ -25,8 +25,7 @@ class AttendeesController < ApplicationController
     @attendee = Attendee.new(attendee_params)
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @attendee.update!(attendee_params)
@@ -79,14 +78,14 @@ class AttendeesController < ApplicationController
   end
 
   def attendee_params
-    permit = [:pay_type, :file]
+    permit = %i[pay_type file]
 
     if current_user.has_any_role? :helpdesk, :head, :admin
-      permit += [:address1, :address2, :area_code, :badge_name,
-                 :city, :country, :email, :emergency_contact,
-                 :guest_badge, :legal_name, :membership_type,
-                 :phone_number, :preferred_first_name, :preferred_last_name,
-                 :state, :zip]
+      permit += %i[address1 address2 area_code badge_name
+                   city country email emergency_contact
+                   guest_badge legal_name membership_type
+                   phone_number preferred_first_name preferred_last_name
+                   state zip]
     end
 
     params.require(:attendee).permit(permit)
