@@ -19,8 +19,6 @@ class AttendeeImportService
 
         datum[attr] = r[c] if Attendee.has_attribute? attr
       end
-      #datum[:created_at] = Time.zone.now
-      #datum[:updated_at] = datum[:created_at]
 
       # Guest badge is a boolean for us
       datum[:guest_badge] = datum[:guest_badge].present?
