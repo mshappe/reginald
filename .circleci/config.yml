@@ -36,9 +36,9 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: Create DB
+          command: bundle exec rails db:create
       - run:
           name: Setup DB
-          command: bundle exec rails db:create
           command: bundle exec rails db:schema:load --trace
       - ruby/rspec-test
 
