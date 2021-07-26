@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -39,9 +41,7 @@ FactoryBot.define do
     password_confirmation { 'splungeitude' }
 
     trait :when_confirmed do
-      after :create do |thing|
-        thing.confirm
-      end
+      after :create, &:confirm
     end
 
     trait :when_admin do
@@ -65,6 +65,12 @@ FactoryBot.define do
     trait :when_staff do
       after :create do |thing|
         thing.add_role :staff
+      end
+    end
+
+    trait :when_read_only do
+      after :create do |thing|
+        thing.add_role :read_only
       end
     end
   end

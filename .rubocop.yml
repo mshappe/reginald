@@ -1,0 +1,14 @@
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rake
+  - rubocop-rspec
+
+RSpec/MultipleMemoizedHelpers:
+  Enable: false
+
+RSpec/RepeatedExample:
+  Enable: false
+
+Metrics/BlockLength:
+  Enabled: false

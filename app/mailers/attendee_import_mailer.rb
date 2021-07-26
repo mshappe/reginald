@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AttendeeImportMailer < ApplicationMailer
   def success(file, user)
     @file = file
@@ -10,5 +12,4 @@ class AttendeeImportMailer < ApplicationMailer
     @e = e
     mail(to: user.email, subject: 'Import failed badly')
   end
-
 end

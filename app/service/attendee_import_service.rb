@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 class AttendeeImportService
@@ -10,16 +12,14 @@ class AttendeeImportService
     csv.by_row!
     csv.each do |r|
       datum = {}
-      COLUMNS.keys.each do |c|
+      COLUMNS.each_key do |c|
         attr = COLUMNS[c]
         next if attr.nil?
 
         # We have some fields that map to the same attrs
         next if datum[attr].present?
 
-        if Attendee.has_attribute? attr
-          datum[attr] = r[c]
-        end
+        datum[attr] = r[c] if Attendee.has_attribute? attr
       end
       datum[:created_at] = Time.zone.now
       datum[:updated_at] = datum[:created_at]
@@ -30,8 +30,6 @@ class AttendeeImportService
     end
 
     Attendee.upsert_all(data)
-    Rails.logger.info "DONE WITH ENGINES"
+    Rails.logger.info 'DONE WITH ENGINES'
   end
-
-
 end

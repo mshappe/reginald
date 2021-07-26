@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Attendees", type: :request do
+RSpec.describe 'Attendees', type: :request do
   let(:user) { FactoryBot.create :user, :when_confirmed, :when_staff }
   let(:head) { FactoryBot.create :user, :when_confirmed, :when_head }
 
-  describe "GET /index" do
+  describe 'GET /index' do
     describe 'logged in user' do
       it do
         sign_in user

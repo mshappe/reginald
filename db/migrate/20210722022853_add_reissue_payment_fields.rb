@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddReissuePaymentFields < ActiveRecord::Migration[6.1]
   def change
     add_column :attendees, :reissued_twice_pay_type, :string

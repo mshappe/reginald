@@ -7,11 +7,11 @@ class AttendeePolicy < ApplicationPolicy
   end
 
   def index?
-    blessed?
+    semi_charmed? || blessed?
   end
 
   def show?
-    blessed?
+    semi_charmed? || blessed?
   end
 
   def edit?
@@ -43,10 +43,14 @@ class AttendeePolicy < ApplicationPolicy
   end
 
   def import?
-    user.has_role? :admin
+    user&.has_role? :admin
   end
 
   protected
+
+  def semi_charmed?
+    user&.has_any_role? :read_only
+  end
 
   def blessed?
     user&.has_any_role? :staff, :head, :admin
