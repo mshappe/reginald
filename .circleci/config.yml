@@ -7,6 +7,8 @@ jobs:
   build:
     docker:
       - image: cimg/ruby:3.0.2-node
+    environment:
+      RAILS_ENV: test
     executor: ruby/default
     steps:
       - checkout
@@ -22,6 +24,8 @@ jobs:
       - image: circleci/postgres:13.3
         environment:
           - POSTGRES_HOST_AUTH_METHOD=trust
+    environment:
+      RAILS_ENV: test
     steps:
       - checkout
       - ruby/install-deps
@@ -30,6 +34,9 @@ jobs:
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Settup DB
+          command: bundle exec rails db:schema:load -trace
       - ruby/rspec-test
 
 workflows:
