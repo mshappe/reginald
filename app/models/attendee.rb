@@ -89,6 +89,8 @@ class Attendee < ApplicationRecord
     end
   end
 
+  has_many :attendee_notes, dependent: :destroy
+
   scope :all_check_ins, -> { where aasm_state: Attendee.checked_in_states }
   scope :reissues, -> { where aasm_state: Attendee.reissued_states }
   scope :ejected, -> { where aasm_state: Attendee::STATE_EJECTED }

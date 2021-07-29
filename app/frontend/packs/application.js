@@ -11,6 +11,7 @@ import "../js/bootstrap_js_files.js"
 import $ from 'jquery';
 import 'select2'
 import 'select2/dist/css/select2.css'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 Rails.start()
 Turbolinks.start()

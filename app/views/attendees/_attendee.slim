@@ -7,3 +7,6 @@ tr
   td= attendee.guest_badge? ? 'Yes' : 'No'
   td= attendee.registered_at
   td[class="#{attendee.aasm.current_state}"]= attendee.aasm.human_state
+  td
+    - if attendee.attendee_notes.count.positive?
+      i.bi-journal-text

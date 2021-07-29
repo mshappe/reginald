@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     collection { post 'import' }
   end
 
+  resources :attendee_notes, only: %i[new create]
+
   resources :users, except: %i[new create destroy] do
     member { put 'bless' }
     member { put 'curse' }
