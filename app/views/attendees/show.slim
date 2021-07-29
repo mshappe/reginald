@@ -143,12 +143,13 @@
                 method: :patch
           .col
             - if current_user.has_any_role? :head, :admin
-              = link_to 'Eject from Convention', eject_attendee_path(@attendee), class: 'btn btn-danger',
-                data: { confirm: 'BE SURE YOU HAVE CONFIRMATION FROM A REGISTRATION OR OPERATIONS HEAD OR A DIRECTOR BEFORE PROCEEDING' },
-                method: :patch
+              = link_to 'Eject from Convention', new_attendee_note_path({ attendee_note: { attendee_id: @attendee.id, note_type: 'ejection' } }), class: 'btn btn-danger',
+                data: { confirm: 'BE SURE YOU HAVE CONFIRMATION FROM A REGISTRATION OR OPERATIONS HEAD OR A DIRECTOR BEFORE PROCEEDING' }
+      .row
+        .col
+          = link_to 'Add Note', new_attendee_note_path({ attendee_note: { attendee_id: @attendee.id, note_type: 'general' } }), class: 'btn btn-success'
 
       - if current_user&.can_transfer? && @attendee.aasm.current_state != Attendee::STATE_EJECTED
-        .row
           .col
             - label = 'Transfer / Edit'
             - label += ' / Assign Guest' if @attendee.guest_badge?
@@ -162,6 +163,22 @@
     hr/
 
     .accordion
+      .accordion_item
+        h2.accordion-header
+          button.accordion-button data-bs-toggle='collapse' data-bs-target='#notes'
+            | Notes (#{@attendee.attendee_notes.count})
+        #notes.accordion-collapse.collapse
+          .accordion-body
+            - @attendee.attendee_notes.each do |n|
+              .row
+                .col
+                  .card
+                    .card-header
+                      - if n.note_type == 'ejection'
+                        strong.text-danger> EJECTION NOTE
+                      strong At #{n.created_at} by #{n.user&.email} (#{n.user&.name})
+                    .card-body
+                      .card-text= n.note
       .accordion-item
         h2.accordion-header
           button.accordion-button data-bs-toggle='collapse' data-bs-target='#transitions'

@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_26_022724) do
+ActiveRecord::Schema.define(version: 2021_07_28_003632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attendee_notes", force: :cascade do |t|
+    t.text "note"
+    t.string "note_type"
+    t.bigint "attendee_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["attendee_id"], name: "index_attendee_notes_on_attendee_id"
+    t.index ["user_id"], name: "index_attendee_notes_on_user_id"
+  end
 
   create_table "attendees", force: :cascade do |t|
     t.integer "event_id"
@@ -120,4 +131,6 @@ ActiveRecord::Schema.define(version: 2021_07_26_022724) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "attendee_notes", "attendees"
+  add_foreign_key "attendee_notes", "users"
 end

@@ -1,0 +1,35 @@
+.container-fluid
+  -if @attendee_note.note_type == 'ejection'
+    strong.text-danger This attendee is being ejected from the convention. If you meant to do this, enter a reason below. If you did not mean to do this, click cancel!
+  .row
+    .col-3
+      h2 Badge Name
+    .col
+      .row
+        h2= @attendee.badge_name + ' (#' + @attendee.id.to_s + ')'
+      - if @attendee.guest_badge?
+        h3.text-info This is a guest-of badge!
+  .row
+    .col-3
+      h3 Legal Name
+    .col
+      h3= @attendee.legal_name
+  .row
+    .col
+      = form_for @attendee_note do |f|
+        .row
+          .col
+            = f.hidden_field :note_type, value: "#{f.object.note_type}"
+            = f.hidden_field :attendee_id, value: "#{@attendee.id}"
+            = f.label :note, class: 'form-label'
+            = f.text_area :note, class: 'form-control'
+        .row
+          .col
+            - button_class = 'btn btn-primary'
+            - button_text = 'Create Note'
+            - if @attendee_note.note_type == 'ejection'
+              - button_class = 'btn btn-danger'
+              - button_text = 'Save Note and Eject Attendee!'
+
+            = f.submit button_text, class: button_class
+            = link_to 'Cancel', attendee_path(@attendee), class: 'btn btn-secondary'
