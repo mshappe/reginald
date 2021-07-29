@@ -43,7 +43,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable, :trackable # , :omniauthable
 
-  validates :email, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :name, presence: true
 
   def can_transfer?
     has_any_role? :helpdesk, :head, :admin
