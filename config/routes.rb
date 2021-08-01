@@ -3,13 +3,7 @@
 # == Route Map
 #
 
-require 'sidekiq/web'
-
 Rails.application.routes.draw do
-  authenticate :user, ->(u) { u.has_role? :admin } do
-    mount Sidekiq::Web => '/sidekiq' # mount Sidekiq::Web in your Rails app
-  end
-
   devise_for :users, controllers: {
     sessions: 'users/sessions'
   }
