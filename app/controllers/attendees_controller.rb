@@ -6,7 +6,11 @@ class AttendeesController < ApplicationController
 
   def index
     @q = policy_scope(Attendee).order(:id).ransack(params[:q])
-    @attendees = @q.result(distinct: true).page params[:page]
+    if params[:q].present?
+      @attendees = @q.result(distinct: true).page params[:page]
+    else
+      @attendees = Attendee.none.page params[:page]
+    end
   end
 
   def show; end

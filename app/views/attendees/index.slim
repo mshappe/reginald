@@ -1,7 +1,8 @@
 .container-fluid
   .card
-    .card-header INSTRUCTIONS
-    .card-body
+    .card-header data-bs-toggle="collapse" data-bs-target="#instructions"
+      | INSTRUCTIONS (click to expand)
+    .card-body.collapse#instructions
       h5.card-title Searching
       ol
         li
@@ -45,20 +46,25 @@
     li.list-group-item.text-warning Reissues: #{Attendee.reissues.count}
     li.list-group-item.text-danger Ejected: #{Attendee.ejected.count}
 
-  .table-responsive
-    table.table.table-striped
-      tr
-        th Badge Number
-        th Badge Name
-        th Legal Name
-        th Preferred First Name
-        th Preferred Last Name
-        th Guest Badge?
-        th Registered At
-        th Status
-        th Notes?
-      = render @attendees
+  - if @attendees.count.zero?
+    .row.mt-3
+      .col
+        strong Enter a search for badge, real, or preferred name, or for exact badge number above
+  -else
+    .table-responsive
+      table.table.table-striped
+        tr
+          th Badge Number
+          th Badge Name
+          th Legal Name
+          th Preferred First Name
+          th Preferred Last Name
+          th Guest Badge?
+          th Registered At
+          th Status
+          th Notes?
+        = render @attendees
 
-  .row
-    .col
-      = link_to "Back to List", attendees_url
+    .row
+      .col
+        = link_to "Back to Main", attendees_url

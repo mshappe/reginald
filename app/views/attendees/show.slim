@@ -45,7 +45,13 @@
         h2 Badge Name
       .col
         .row
-          h2= @attendee.badge_name + ' (#' + @attendee.id.to_s + ')'
+          - if @attendee.badge_name.blank?
+            h2
+              span.text-muted
+                ' [no badge name assigned--ASK FOR ONE]
+              | (##{@attendee.id.to_s})
+          - else
+            h2 #{@attendee.badge_name} (##{@attendee.id.to_s})
     - if @attendee.guest_badge?
       .row
         h3.text-info This is a guest-of badge!
@@ -67,7 +73,7 @@
         .col-3
           h3 Preferred Name
         .col
-          h3= "#{@attendee.preferred_first_name} #{@attendee.preferred_last_name}"
+          h3 #{@attendee.preferred_first_name} #{@attendee.preferred_last_name}
     .row
       .col-2
         strong Email
@@ -89,6 +95,10 @@
         strong Registered at
       .col
         div= @attendee.registered_at
+      .col-2
+        strong Registered by
+      .col
+        div= @attendee.registrant_legal_name
       .col-2
         strong NEON Attendee ID
       .col
@@ -168,7 +178,7 @@
 
     .row
       .col
-        = link_to "Return to List", attendees_path
+        = link_to "Return to Main", attendees_path
 
     hr/
 
