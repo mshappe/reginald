@@ -5,6 +5,7 @@ class AttendeesController < ApplicationController
   before_action :set_paper_trail_whodunnit
 
   def index
+    redirect_to root_path if current_user.roles.blank?
     @q = policy_scope(Attendee).order(:id).ransack(params[:q])
     if params[:q].present?
       @attendees = @q.result(distinct: true).page params[:page]

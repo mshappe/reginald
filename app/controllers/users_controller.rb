@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_action :set_paper_trail_whodunnit
 
   def index
+    redirect_to root_path if current_user.roles.blank?
     @q = policy_scope(User).order(:email).ransack(params[:q])
     @users = @q.result(distinct: true).page params[:page]
   end
