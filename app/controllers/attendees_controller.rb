@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AttendeesController < ApplicationController
-  before_action :get_attendee, except: %i[index importer import]
+  before_action :get_attendee, except: %i[index importer import badge_export]
   before_action :set_paper_trail_whodunnit
 
   def index

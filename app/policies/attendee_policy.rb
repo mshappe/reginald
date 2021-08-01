@@ -57,6 +57,10 @@ class AttendeePolicy < ApplicationPolicy
     user&.has_role? :admin
   end
 
+  def badge_export?
+    import?
+  end
+
   protected
 
   def semi_charmed?

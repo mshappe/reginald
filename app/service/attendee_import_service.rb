@@ -20,6 +20,9 @@ class AttendeeImportService
         datum[attr] = r[c] if Attendee.has_attribute? attr
       end
 
+      # OK, now it's all parsed, we want to skip young children (2021 ONLY)
+      next if datum[:membership_type] =~ /^Young Child/
+
       # Guest badge is a boolean for us
       datum[:guest_badge] = datum[:guest_badge].present?
       Attendee.create! datum
