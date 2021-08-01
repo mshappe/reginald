@@ -7,12 +7,6 @@ class AttendeesController < ApplicationController
   def index
     @q = policy_scope(Attendee).order(:id).ransack(params[:q])
     @attendees = @q.result(distinct: true).page params[:page]
-    respond_to do |format|
-      format.json do
-        render json: @attendees
-      end
-      format.html
-    end
   end
 
   def show; end

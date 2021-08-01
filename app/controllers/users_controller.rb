@@ -29,7 +29,13 @@ class UsersController < ApplicationController
 
   def edit; end
 
-  def update; end
+  def update
+    if @user.update(user_params)
+      redirect_to users_path, notice: 'User updated'
+    else
+      render :edit, alert: 'An error occurred'
+    end
+  end
 
   protected
 

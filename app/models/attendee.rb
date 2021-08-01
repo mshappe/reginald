@@ -95,6 +95,10 @@ class Attendee < ApplicationRecord
   scope :reissues, -> { where aasm_state: Attendee.reissued_states }
   scope :ejected, -> { where aasm_state: Attendee::STATE_EJECTED }
 
+  # Membership types are a bit of a hack. Also, for 2021, we only care about Adult and Teen
+  scope :adults, -> { where membership_type: 'Adult (Age 18+)' }
+  scope :non_adults, -> { where membership_type: ['Teen (Ages 13 to 17)', 'Child (Ages 6 to 12)'] }
+
   attr_accessor :pay_type, :dummy
 
   def self.valid_states
@@ -111,6 +115,21 @@ class Attendee < ApplicationRecord
 
   def self.checked_in_states
     [Attendee::STATE_CHECKED_IN] + Attendee.reissued_states
+  end
+
+  def self.membership_types
+    MEMBERSHIP_TYPES
+  end
+
+  def printable_membership_type
+    case membership_type
+    when /^Adult/
+      "ADULT"
+    when /^Teen/, /^Child/
+      "UNDER-18"
+    else
+      nil
+    end
   end
 
   protected
