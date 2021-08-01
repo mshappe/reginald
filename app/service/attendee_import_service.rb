@@ -26,6 +26,7 @@ class AttendeeImportService
 
       # Guest badge is a boolean for us
       datum[:guest_badge] = datum[:guest_badge].present?
+      datum[:registered_at] = Time.zone.strptime datum[:registered_at], '%m/%d/%Y %H:%M'
 
       # Dealers attendee names are different
       if r['Event Ticket Name'] == 'Dealer'
