@@ -7,7 +7,9 @@ class AttendeeExportService
       Attendee.find_each do |a|
         next if a.printable_membership_type.nil?
 
-        csv << [a.id, a.badge_name.first(29), a.printable_membership_type]
+        dealer = ''
+        dealer = 'DEALER' if a.dealer?
+        csv << [a.id, a.badge_name&.first(29), a.printable_membership_type]
       end
     end
 

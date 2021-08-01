@@ -128,6 +128,8 @@ class Attendee < ApplicationRecord
       "ADULT"
     when /^Teen/, /^Child/
       "UNDER-18"
+    when /^Dealer/
+      "ADULT (DEALER)"
     else
       nil
     end
