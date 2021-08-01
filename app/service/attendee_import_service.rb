@@ -10,6 +10,10 @@ class AttendeeImportService
     csv.by_row!
     csv.each do |r|
       datum = {}
+
+      # Skip blanks
+      next if r['Event Ticket Name'].blank?
+
       COLUMNS.each_key do |c|
         attr = COLUMNS[c]
         next if attr.nil?
@@ -22,6 +26,17 @@ class AttendeeImportService
 
       # Guest badge is a boolean for us
       datum[:guest_badge] = datum[:guest_badge].present?
+
+      # Dealers attendee names are different
+      if r['Event Ticket Name'] == 'Dealer'
+        full_name = "#{r['Membership: First Name (C)']} #{r['Membership: Last Name (C)']}"
+        email = "#{r['Business: Email Address (C)']}"
+        badge_name = "#{r['Membership: Badge Name (C)']}"
+        datum[:legal_name] = full_name
+        datum[:email] = email
+        datum[:badge_name] = badge_name
+      end
+
       Attendee.create! datum
     end
 

@@ -46,8 +46,17 @@
       .col
         .row
           h2= @attendee.badge_name + ' (#' + @attendee.id.to_s + ')'
-        - if @attendee.guest_badge?
-          h3.text-info This is a guest-of badge!
+    - if @attendee.guest_badge?
+      .row
+        h3.text-info This is a guest-of badge!
+    - if @attendee.dealer?
+      .row
+        h3.text-info This is a dealer's membership badge!
+      .row
+        .col-3
+          h3 Business Name
+        .col
+          h3= @attendee.business_name
     .row
       .col-3
         h3 Legal Name

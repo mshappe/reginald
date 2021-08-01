@@ -36,6 +36,7 @@ module Importable
     'Business Name (C)' => nil,
     'Membership: First Name (C)' => nil,
     'Membership: Last Name (C)' => nil,
-    'Dealer Table Notes (C)' => nil
+    'Dealer Table Notes (C)' => nil,
+    'Business Name (C)' => :business_name
   }.freeze
 end

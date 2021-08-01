@@ -10,6 +10,7 @@
 #  address2                 :string
 #  area_code                :string
 #  badge_name               :string
+#  business_name            :string
 #  checked_in_at            :datetime
 #  checked_in_by            :bigint
 #  city                     :string

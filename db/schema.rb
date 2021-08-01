@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_29_030022) do
+ActiveRecord::Schema.define(version: 2021_08_01_184214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2021_07_29_030022) do
     t.string "last_chance_pay_type"
     t.integer "transaction_id"
     t.datetime "registered_at"
+    t.string "business_name"
     t.index ["badge_name"], name: "index_attendees_on_badge_name"
     t.index ["event_id"], name: "index_attendees_on_event_id"
     t.index ["neon_attendee_id"], name: "index_attendees_on_neon_attendee_id"
