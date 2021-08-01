@@ -11,9 +11,6 @@ class AttendeeExportService
       end
     end
 
-    file = File.open(Rails.root.join('tmp', 'badge_export.csv'), 'w')
-    file.write(csv)
-    file.close
-    file.path
+    csv
   end
 end
