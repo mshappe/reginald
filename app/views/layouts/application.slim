@@ -7,31 +7,9 @@ html
     = javascript_pack_tag "application", "data-turbolinks-track" => true
 
   body
-    .container-fluid
-      nav.navbar.navbar-expand-md.navbar-light.bg-light
-        .container-fluid
-          = link_to 'REGINALD', root_url, class: 'navbar-brand'
-          button.navbar-toggler[type='button' data-bs-toggle='collapse' data-bs-target='#navbarMain']
-            span.navbar-toggler-icon
-          #navbarMain.collapse.navbar-collapse
-            ul.navbar-nav.me-autho.mb-2.mb-lg-0
-              - if current_user.present?
-                - if current_user.has_any_role?(:admin, :head)
-                  li.nav-item
-                    = link_to 'Manage Users', users_path, class: 'nav-link'
-                - if current_user.has_role?(:admin)
-                  li.nav-item
-                    =link_to 'Import', importer_attendees_path, class: 'nav-link'
-                li.nav-item
-                  = link_to 'Sign out', destroy_user_session_path, class: 'nav-link', method: :delete
-              - else
-                li.nav-item
-                  = link_to 'Sign in', new_user_session_path, class: 'nav-link'
-                li.nav-item
-                  = link_to 'Sign up', new_user_registration_path, class: 'nav-link'
+    .container-xl.container-lg.container-md.container-sm
+      = render partial: 'menu'
 
-
-    .container-fluid
       - if flash.notice
         .alert.alert-primary.alert-dismissible.fade.show
           = flash.notice
@@ -42,12 +20,11 @@ html
           = flash.alert
           button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='close'
 
-    = yield
+      = yield
 
-    hr /
+      hr /
 
-    .container-fluid
       .row
         .col
           .pb-3.text-center
-            | Reginald version 1.0.3 "Steamy, Stormy Weather", Copyright 2021 Michael Scott Shappe, Apache 2.0 license
+            | Reginald version 1.0.4 "Steamy, Stormy Weather", Copyright 2021 Michael Scott Shappe, Apache 2.0 license

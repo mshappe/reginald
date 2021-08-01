@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AttendeesController < ApplicationController
-  before_action :get_attendee, except: %i[index importer import]
+  before_action :get_attendee, except: %i[index new create importer import]
   before_action :set_paper_trail_whodunnit
 
   def index
@@ -18,10 +18,18 @@ class AttendeesController < ApplicationController
 
   def new
     @attendee = Attendee.new
+    authorize @attendee
   end
 
   def create
     @attendee = Attendee.new(attendee_params)
+    authorize @attendee
+
+    if @attendee.save
+      redirect_to @attendee, notice: 'Attendee created!'
+    else
+      render :new, alert: 'Attendee could not be created!'
+    end
   end
 
   def edit; end
@@ -84,7 +92,7 @@ class AttendeesController < ApplicationController
                    city country email emergency_contact
                    guest_badge legal_name membership_type
                    phone_number preferred_first_name preferred_last_name
-                   state zip]
+                   state zip registered_at registered_by]
     end
 
     params.require(:attendee).permit(permit)

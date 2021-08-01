@@ -1,91 +1,96 @@
-.container
-  .card
-    .card-header INSTRUCTIONS
-    .card-body
-      h5.card-title Transfer
-      .card-text
-        ol
-          li Verify information for origial purchaser
-          li Ask attendee for ID and proof of COVID-19 vaccination
-          li Update information below
-          li Click 'Update Attendee'
-      h5.card-title Assign Guest Badge
-      .card-text
-        ol
-          li Follow Transfer instructions above
-          li Be sure to uncheck the 'Guest badge' check!
-        div.text-danger Note: If there is no 'Guest badge' check, this was not a guest badge! Make sure you have the right entry!
+.card
+  .card-header INSTRUCTIONS
+  .card-body
+    h5.card-title Transfer
+    .card-text
+      ol
+        li Verify information for origial purchaser
+        li Ask attendee for ID and proof of COVID-19 vaccination
+        li Update information below
+        li Click 'Update Attendee'
+    h5.card-title Assign Guest Badge
+    .card-text
+      ol
+        li Follow Transfer instructions above
+        li Be sure to uncheck the 'Guest badge' check!
+      div.text-danger Note: If there is no 'Guest badge' check, this was not a guest badge! Make sure you have the right entry!
 
-  = form_for @attendee do |f|
-    .fs-3.mb-3 Who
-    .row.mb-3
-      .col
-        = f.label :legal_name, class: 'form-label'
-        = f.text_field :legal_name, class: 'form-control'
+= form_for @attendee do |f|
+  - if @attendee.new_record?
+    = f.hidden_field :registered_at, value: Time.zone.now
 
-    .row.mb-3
-      .col
-        = f.label :preferred_first_name, class: 'form-label'
-        = f.text_field :preferred_first_name, class: 'form-control'
-      .col
-        = f.label :preferred_last_name, class: 'form-label'
-        = f.text_field :preferred_last_name, class: 'form-control'
+  .fs-3.mb-3 Who
+  .row.mb-3
+    .col
+      = f.label :legal_name, class: 'form-label'
+      = f.text_field :legal_name, class: 'form-control'
 
-    .row.mb-3
-      .col
-        = f.label :email, class: 'form-label'
-        = f.email_field :email, class: 'form-control'
+  .row.mb-3
+    .col
+      = f.label :preferred_first_name, class: 'form-label'
+      = f.text_field :preferred_first_name, class: 'form-control'
+    .col
+      = f.label :preferred_last_name, class: 'form-label'
+      = f.text_field :preferred_last_name, class: 'form-control'
 
-      .col
-        = f.label :badge_name, class: 'form-label'
-        = f.text_field :badge_name, class: 'form-control'
+  .row.mb-3
+    .col
+      = f.label :email, class: 'form-label'
+      = f.email_field :email, class: 'form-control'
 
-    .fs-3.mb-3 What
+    .col
+      = f.label :badge_name, class: 'form-label'
+      = f.text_field :badge_name, class: 'form-control'
+
+  .fs-3.mb-3 What
+  .row.mb-3
+    .col-2
+      = f.label :membership_type, class: 'form-label'
+    - if current_user&.has_any_role? :head, :admin
+      .col-3
+        = f.select :membership_type, options_for_select(Attendee.pluck(:membership_type).uniq.compact.map { |mt| [mt, mt] }), class: 'form-select'
+      .col.text-danger
+        strong Only Adult and Teen and Dealer are valid for CVG2021
+    - else
+      .col-3
+        div= @attendee.membership_type
+      .col.text-danger
+        strong Only Heads and Admin can change membership type
+  - if @attendee.guest_badge?
     .row.mb-3
       .col-2
-        = f.label :membership_type, class: 'form-label'
-      - if current_user&.has_any_role? :head, :admin
-        .col-3
-          = f.select :membership_type, options_for_select(Attendee.pluck(:membership_type).uniq.compact.map { |mt| [mt, mt] }), class: 'form-select'
-        .col.text-danger
-          strong Only Adult and Teen are valid for CVG2021
-      - else
-        .col-3
-          div= @attendee.membership_type
-        .col.text-danger
-          strong Only Heads and Admin can change membership type
-    - if @attendee.guest_badge?
-      .row.mb-3
-        .col-2
-          .form-check
-            = f.label :guest_badge, class: 'form-check-label'
-            = f.check_box :guest_badge, class: 'form-check-input'
-        .col.text-danger
-          strong Make sure to uncheck this if you're assigning a Guest Of badge to somebody!
+        .form-check
+          = f.label :guest_badge, class: 'form-check-label'
+          = f.check_box :guest_badge, class: 'form-check-input'
+      .col.text-danger
+        strong Make sure to uncheck this if you're assigning a Guest Of badge to somebody!
 
-    .fs-3.mb-3 Where
-    .row.mb-3
-      .col
-        = f.label :address1, class: 'form-label'
-        = f.text_field :address1, class: 'form-control'
-    .row.mb-3
-      .col
-        = f.label :address2, class: 'form-label'
-        = f.text_field :address2, class: 'form-control'
-    .row.mb-3
-      .col
-        = f.label :city, class: 'form-label'
-        = f.text_field :city, class: 'form-control'
-      .col
-        = f.label :state, class: 'form-label'
-        = f.text_field :state, class: 'form-control'
-      .col
-        = f.label :zip, class: 'form-label'
-        = f.text_field :zip, class: 'form-control'
-      .col
-       = f.label :country, class: 'form-label'
-       = f.text_field :country, class: 'form-control'
+  .fs-3.mb-3 Where
+  .row.mb-3
+    .col
+      = f.label :address1, class: 'form-label'
+      = f.text_field :address1, class: 'form-control'
+  .row.mb-3
+    .col
+      = f.label :address2, class: 'form-label'
+      = f.text_field :address2, class: 'form-control'
+  .row.mb-3
+    .col
+      = f.label :city, class: 'form-label'
+      = f.text_field :city, class: 'form-control'
+    .col
+      = f.label :state, class: 'form-label'
+      = f.text_field :state, class: 'form-control'
+    .col
+      = f.label :zip, class: 'form-label'
+      = f.text_field :zip, class: 'form-control'
+    .col
+      = f.label :country, class: 'form-label'
+      = f.text_field :country, class: 'form-control'
 
-    .row.mb-3
-      .col= f.submit class: 'btn btn-primary'
+  .row.mb-3
+    .col= f.submit class: 'btn btn-primary'
+    - if @attendee.new_record?
+      .col = link_to 'Cancel', attendees_path, class: 'btn btn-secondary'
+    - else
       .col= link_to 'Cancel', attendee_path(@attendee), class: 'btn btn-secondary'

@@ -1,252 +1,251 @@
-.container
-  .card
-    .card-header INSTRUCTIONS
-    .card-body
-      - if current_user.has_role? :read_only
-        h5.card-title You can look but don't touch!
-      - else
-        - if @attendee.aasm.current_state == Attendee::STATE_ABSENT
-          h5.card-title First-time check-in
-          .card-text
-            ol
-              li Ask attendee for ID and proof of COVID-19 vaccination
-              li Verify information below
-              li If everything matches, find the attendee's badge
-              li Click 'Check in'
-        - if @attendee.aasm.current_state == Attendee::STATE_CHECKED_IN
-          h5.card-title Lost badge re-issue
-          .card-text
-            div An attendee can have their badge replaced up to four times
-            ol
-              li Ask attendee for ID and proof of COVID-19 vaccination
-              li Verify information below
-              li If everything matches, find a blank badge, write the attendee's badge name
-                  and badge number in the appropriate places.
-              li Click 'Reissue'
-        - if @attendee.aasm.current_state.in? Attendee.pay_states
-          h5.card-title Second - Fourth badge re-issue
-          .card-text
-            div An attendee can have their badge replaced up to four times
-            div After the first reissue, the others cost $5 each, cash or credit
-            ol
-              li Ask attendee for ID and proof of COVID-19 vaccination
-              li Verify information below
-              li If everything matches, find a blank badge, write the attendee's badge name
-                  and badge number in the appropriate places.
-              li Select Cash or Credit depending on how they are paying, complete the sale
-              li Click 'Reissue'
-        - if @attendee.aasm.current_state == Attendee::STATE_LAST_CHANCE
-          h5.card-title Attendee has exhausted their reissues
-          .card-text
-            div An attendee can have their badge replaced up to four times. This attendee has used up all of their reissues.
-  .mt-3
+.card
+  .card-header INSTRUCTIONS
+  .card-body
+    - if current_user.has_role? :read_only
+      h5.card-title You can look but don't touch!
+    - else
+      - if @attendee.aasm.current_state == Attendee::STATE_ABSENT
+        h5.card-title First-time check-in
+        .card-text
+          ol
+            li Ask attendee for ID and proof of COVID-19 vaccination
+            li Verify information below
+            li If everything matches, find the attendee's badge
+            li Click 'Check in'
+      - if @attendee.aasm.current_state == Attendee::STATE_CHECKED_IN
+        h5.card-title Lost badge re-issue
+        .card-text
+          div An attendee can have their badge replaced up to four times
+          ol
+            li Ask attendee for ID and proof of COVID-19 vaccination
+            li Verify information below
+            li If everything matches, find a blank badge, write the attendee's badge name
+                and badge number in the appropriate places.
+            li Click 'Reissue'
+      - if @attendee.aasm.current_state.in? Attendee.pay_states
+        h5.card-title Second - Fourth badge re-issue
+        .card-text
+          div An attendee can have their badge replaced up to four times
+          div After the first reissue, the others cost $5 each, cash or credit
+          ol
+            li Ask attendee for ID and proof of COVID-19 vaccination
+            li Verify information below
+            li If everything matches, find a blank badge, write the attendee's badge name
+                and badge number in the appropriate places.
+            li Select Cash or Credit depending on how they are paying, complete the sale
+            li Click 'Reissue'
+      - if @attendee.aasm.current_state == Attendee::STATE_LAST_CHANCE
+        h5.card-title Attendee has exhausted their reissues
+        .card-text
+          div An attendee can have their badge replaced up to four times. This attendee has used up all of their reissues.
+.mt-3
+  .row
+    .col-3
+      h2 Badge Name
+    .col
+      .row
+        - if @attendee.badge_name.blank?
+          h2
+            span.text-muted
+              ' [no badge name assigned--ASK FOR ONE]
+            | (##{@attendee.id.to_s})
+        - else
+          h2 #{@attendee.badge_name} (##{@attendee.id.to_s})
+  - if @attendee.guest_badge?
+    .row
+      h3.text-info This is a guest-of badge!
+  - if @attendee.dealer?
+    .row
+      h3.text-info This is a dealer's membership badge!
     .row
       .col-3
-        h2 Badge Name
+        h3 Business Name
       .col
-        .row
-          - if @attendee.badge_name.blank?
-            h2
-              span.text-muted
-                ' [no badge name assigned--ASK FOR ONE]
-              | (##{@attendee.id.to_s})
-          - else
-            h2 #{@attendee.badge_name} (##{@attendee.id.to_s})
-    - if @attendee.guest_badge?
-      .row
-        h3.text-info This is a guest-of badge!
-    - if @attendee.dealer?
-      .row
-        h3.text-info This is a dealer's membership badge!
-      .row
-        .col-3
-          h3 Business Name
-        .col
-          h3= @attendee.business_name
+        h3= @attendee.business_name
+  .row
+    .col-3
+      h3 Legal Name
+    .col
+      h3= @attendee.legal_name
+  - if @attendee.preferred_first_name.present?
     .row
       .col-3
-        h3 Legal Name
+        h3 Preferred Name
       .col
-        h3= @attendee.legal_name
-    - if @attendee.preferred_first_name.present?
-      .row
-        .col-3
-          h3 Preferred Name
-        .col
-          h3 #{@attendee.preferred_first_name} #{@attendee.preferred_last_name}
-    .row
-      .col-2
-        strong Email
-      .col
-        = @attendee.email
-      .col-2
-        strong Phone
-      .col
-        = "#{@attendee.area_code} #{@attendee.phone_number}"
-    .row
-      .col-2
-        strong Address
-      .col
-        div= @attendee.address1
-        div= @attendee.address2
-        div= "#{@attendee.city}, #{@attendee.state} #{@attendee.zip}"
-    .row
-      .col-2
+        h3 #{@attendee.preferred_first_name} #{@attendee.preferred_last_name}
+  .row.mt-3
+    .col-2
+      strong Email
+    .col
+      = @attendee.email
+    .col-2
+      strong Phone
+    .col
+      = "#{@attendee.area_code} #{@attendee.phone_number}"
+  .row
+    .col-2
+      strong Address
+    .col
+      div= @attendee.address1
+      div= @attendee.address2
+      div= "#{@attendee.city}, #{@attendee.state} #{@attendee.zip}"
+  .row.mt-3
+    .col-2
+      div
         strong Registered at
-      .col
-        div= @attendee.registered_at
-      .col-2
+      div
         strong Registered by
-      .col
-        div= @attendee.registrant_legal_name
-      .col-2
-        strong NEON Attendee ID
-      .col
-        div= @attendee.neon_attendee_id
-    .row
-      .col-2
-        strong Status
-      .col
-        div[class="#{@attendee.aasm.current_state}"]= @attendee.aasm.human_state
-    - unless current_user.has_role? :read_only
-      .row.mt-3
-        .col
-          - state = @attendee.aasm.current_state
-          - data = {}
-          - if state == Attendee::STATE_LAST_CHANCE
-            strong THIS ATTENDEE MAY NOT RECEIVE AN ADDITIONAL REPLACEMENT BADGE
-          - elsif state == Attendee::STATE_EJECTED
-            .ejected THIS ATTENDEE HAS BEEN EJECTED OR OTHERWISE EXCLUDED FROM THE CONVENTION
-          - else
-            - case state
-              - when Attendee::STATE_ABSENT
-                - link = checkin_attendee_path(@attendee)
-                - label = 'Check In'
-                - css = 'btn btn-primary'
-              - when Attendee::STATE_CHECKED_IN, Attendee::STATE_REISSUED_ONCE, Attendee::STATE_REISSUED_TWICE
-                - link = reissue_attendee_path(@attendee)
-                - label = 'Reissue'
-                - css = 'btn btn-success'
-              - when Attendee::STATE_REISSUED_THRICE
-                - link = reissue_attendee_path(@attendee)
-                - label = 'Reissue'
-                - css = 'btn btn-warning'
-                - data = { confirm: 'THIS IS THE LAST TIME THIS ATTENDEE CAN RECEIVE A REPLACEMENT BADGE!' }
+    .col-4
+      div= @attendee.registered_at
+      div= @attendee.registrant_legal_name
+    .col-2
+      strong NEON Attendee #
+    .col
+      div= @attendee.neon_attendee_id
+  .row.mt-3
+    .col-2
+      strong Status
+    .col
+      div[class="#{@attendee.aasm.current_state}"]= @attendee.aasm.human_state
+  - unless current_user.has_role? :read_only
+    .row.mt-3
+      .col-6
+        - state = @attendee.aasm.current_state
+        - data = {}
+        - if state == Attendee::STATE_LAST_CHANCE
+          strong THIS ATTENDEE MAY NOT RECEIVE AN ADDITIONAL REPLACEMENT BADGE
+        - elsif state == Attendee::STATE_EJECTED
+          .ejected THIS ATTENDEE HAS BEEN EJECTED OR OTHERWISE EXCLUDED FROM THE CONVENTION
+        - else
+          - case state
+            - when Attendee::STATE_ABSENT
+              - link = checkin_attendee_path(@attendee)
+              - label = 'Check In'
+              - css = 'btn btn-primary'
+            - when Attendee::STATE_CHECKED_IN, Attendee::STATE_REISSUED_ONCE, Attendee::STATE_REISSUED_TWICE
+              - link = reissue_attendee_path(@attendee)
+              - label = 'Reissue'
+              - css = 'btn btn-success'
+            - when Attendee::STATE_REISSUED_THRICE
+              - link = reissue_attendee_path(@attendee)
+              - label = 'Reissue'
+              - css = 'btn btn-warning'
+              - data = { confirm: 'THIS IS THE LAST TIME THIS ATTENDEE CAN RECEIVE A REPLACEMENT BADGE!' }
 
-            = form_for @attendee, url: link do |f|
-              .row
-                .col
-                  = f.submit label, id: 'reissue', class: css, disabled: state.in?(Attendee.pay_states), data: data
-                .col
-                  = f.hidden_field :dummy
-                  - if state.in? Attendee.pay_states
-                    .btn-group role="group"
-                      = f.radio_button :pay_type, 'cash', class: 'btn-check'
-                      = f.label :pay_type_cash, 'Cash', class: 'btn btn-outline-secondary'
-                      = f.radio_button :pay_type, 'credit', class: 'btn-check'
-                      = f.label :pay_type_credit, 'Credit', class: 'btn btn-outline-secondary'
-                javascript:
-                  let form = document.forms["edit_attendee_#{@attendee.id}"]
-                  form.addEventListener('change', (e) => {
-                    let target = e.target;
-                    if (target.value === 'cash' || target.value === 'credit') {
-                      document.getElementById('reissue').disabled = false;
-                    }
-                  });
+          = form_for @attendee, url: link do |f|
+            .row
+              .col
+                = f.submit label, id: 'reissue', class: css, disabled: state.in?(Attendee.pay_states), data: data
+              .col
+                = f.hidden_field :dummy
+                - if state.in? Attendee.pay_states
+                  .btn-group role="group"
+                    = f.radio_button :pay_type, 'cash', class: 'btn-check'
+                    = f.label :pay_type_cash, 'Cash', class: 'btn btn-outline-secondary'
+                    = f.radio_button :pay_type, 'credit', class: 'btn-check'
+                    = f.label :pay_type_credit, 'Credit', class: 'btn btn-outline-secondary'
+              javascript:
+                let form = document.forms["edit_attendee_#{@attendee.id}"]
+                form.addEventListener('change', (e) => {
+                  let target = e.target;
+                  if (target.value === 'cash' || target.value === 'credit') {
+                    document.getElementById('reissue').disabled = false;
+                  }
+                });
 
-        - if @attendee.aasm.current_state != Attendee::STATE_EJECTED
-          - if @attendee.aasm.current_state != Attendee::STATE_ABSENT
-            .col
-              = link_to 'This Attendee was checked in by accident!', uncheckin_attendee_path(@attendee),
-                class: 'btn btn-secondary',
-                data: { confirm: 'Are you sure you want to reset this attendee?' },
-                method: :patch
+      - if @attendee.aasm.current_state != Attendee::STATE_EJECTED
+        - if @attendee.aasm.current_state != Attendee::STATE_ABSENT
           .col
-            - if current_user.has_any_role? :head, :admin
-              = link_to 'Eject from Convention', new_attendee_note_path({ attendee_note: { attendee_id: @attendee.id, note_type: 'ejection' } }), class: 'btn btn-danger',
-                data: { confirm: 'BE SURE YOU HAVE CONFIRMATION FROM A REGISTRATION OR OPERATIONS HEAD OR A DIRECTOR BEFORE PROCEEDING' }
-      .row
+            = link_to 'Reset Attendee', uncheckin_attendee_path(@attendee),
+              class: 'btn btn-secondary',
+              data: { confirm: 'Are you sure you want to reset this attendee?' },
+              method: :patch
         .col
-          = link_to 'Add Note', new_attendee_note_path({ attendee_note: { attendee_id: @attendee.id, note_type: 'general' } }), class: 'btn btn-success'
+          - if current_user.has_any_role? :head, :admin
+            = link_to 'Eject from Convention', new_attendee_note_path({ attendee_note: { attendee_id: @attendee.id, note_type: 'ejection' } }), class: 'btn btn-danger',
+              data: { confirm: 'BE SURE YOU HAVE CONFIRMATION FROM A REGISTRATION OR OPERATIONS HEAD OR A DIRECTOR BEFORE PROCEEDING' }
+    .row.mt-3
+      .col
+        = link_to 'Add Note', new_attendee_note_path({ attendee_note: { attendee_id: @attendee.id, note_type: 'general' } }), class: 'btn btn-success'
 
       - if current_user&.can_transfer? && @attendee.aasm.current_state != Attendee::STATE_EJECTED
-          .col
-            - label = 'Transfer / Edit'
-            - label += ' / Assign Guest' if @attendee.guest_badge?
-            = link_to label, edit_attendee_path(@attendee), class: 'btn btn-warning',
-              data: { confirm: 'At-con transfers and edits should be vetted by a Department Head or Director' }
+        .col
+          - label = 'Transfer / Edit'
+          - label += ' / Assign Guest' if @attendee.guest_badge?
+          = link_to label, edit_attendee_path(@attendee), class: 'btn btn-warning',
+            data: { confirm: 'At-con transfers and edits should be vetted by a Department Head or Director' }
 
-    .row
-      .col
-        = link_to "Return to Main", attendees_path
+  .row
+    .col
+      = link_to "Return to Main", attendees_path
 
-    hr/
+  hr/
 
-    .accordion
-      .accordion_item
-        h2.accordion-header
-          button.accordion-button data-bs-toggle='collapse' data-bs-target='#notes'
-            | Notes (#{@attendee.attendee_notes.count})
-        #notes.accordion-collapse.collapse
-          .accordion-body
-            - @attendee.attendee_notes.each do |n|
-              .row
-                .col
-                  .card
-                    .card-header
-                      - if n.note_type == 'ejection'
-                        strong.text-danger> EJECTION NOTE
-                      strong At #{n.created_at} by #{n.user&.email} (#{n.user&.name})
-                    .card-body
-                      .card-text= n.note
-      .accordion-item
-        h2.accordion-header
-          button.accordion-button data-bs-toggle='collapse' data-bs-target='#transitions'
-            | Transition Log
-        #transitions.accordion-collapse.collapse
-          .accordion-body
-            - Attendee.valid_states.reject { |s| s ==:absent }.each do |state|
-              - at = "#{state}_at".to_sym
-              - by = "#{state}_by".to_sym
-              - pay = "#{state}_pay_type".to_sym
-              - if @attendee.send(at).present?
-                .row
-                  .col-3
-                    strong= @attendee.send(at)
-                  .col
-                    div
-                      strong> Transitioned to
-                      span>[class="#{state}"]= state
-                    - if @attendee.send(by).present?
-                      div
-                        strong> by
-                        - user = User.find(@attendee.send(by))
-                        span>= "#{user.name} (#{user.email})"
-                    - if @attendee.respond_to?(pay) && @attendee.send(pay).present?
-                      div
-                        strong> paid $5
-                        span= @attendee.send(pay)
-
+  .accordion
+    .accordion_item
+      h2.accordion-header
+        button.accordion-button data-bs-toggle='collapse' data-bs-target='#notes'
+          | Notes (#{@attendee.attendee_notes.count})
+      #notes.accordion-collapse.collapse
+        .accordion-body
+          - @attendee.attendee_notes.each do |n|
+            .row
+              .col
+                .card
+                  .card-header
+                    - if n.note_type == 'ejection'
+                      strong.text-danger> EJECTION NOTE
+                    strong At #{n.created_at} by #{n.user&.email} (#{n.user&.name})
+                  .card-body
+                    .card-text= n.note
     .accordion-item
       h2.accordion-header
-        button.accordion-button data-bs-toggle='collapse' data-bs-target='#edits'
-          | Edit Log
-      #edits.accordion-collapse.collapse
+        button.accordion-button data-bs-toggle='collapse' data-bs-target='#transitions'
+          | Transition Log
+      #transitions.accordion-collapse.collapse
         .accordion-body
-          - edit_keys = %w(legal_name badge_name preferred_first_name preferred_last_name email guest_badge).freeze
-          - @attendee.versions.where(event: 'update').each do |a|
-            - next if (a.changeset.keys & edit_keys).empty?
-            .row
-              .col-3
-                strong= a.created_at
-              - edit_keys.each do |f|
-                - if a.changeset[f].present?
-                  .col
+          - Attendee.valid_states.reject { |s| s ==:absent }.each do |state|
+            - at = "#{state}_at".to_sym
+            - by = "#{state}_by".to_sym
+            - pay = "#{state}_pay_type".to_sym
+            - if @attendee.send(at).present?
+              .row
+                .col-3
+                  strong= @attendee.send(at)
+                .col
+                  div
+                    strong> Transitioned to
+                    span>[class="#{state}"]= state
+                  - if @attendee.send(by).present?
                     div
-                      strong #{f.humanize} Changed
+                      strong> by
+                      - user = User.find(@attendee.send(by))
+                      span>= "#{user.name} (#{user.email})"
+                  - if @attendee.respond_to?(pay) && @attendee.send(pay).present?
                     div
-                      strong> From
-                      | #{a.changeset[f].first}
-                    div
-                      strong> To
-                      | #{a.changeset[f].last}
+                      strong> paid $5
+                      span= @attendee.send(pay)
+
+  .accordion-item
+    h2.accordion-header
+      button.accordion-button data-bs-toggle='collapse' data-bs-target='#edits'
+        | Edit Log
+    #edits.accordion-collapse.collapse
+      .accordion-body
+        - edit_keys = %w(legal_name badge_name preferred_first_name preferred_last_name email guest_badge).freeze
+        - @attendee.versions.where(event: 'update').each do |a|
+          - next if (a.changeset.keys & edit_keys).empty?
+          .row
+            .col-3
+              strong= a.created_at
+            - edit_keys.each do |f|
+              - if a.changeset[f].present?
+                .col
+                  div
+                    strong #{f.humanize} Changed
+                  div
+                    strong> From
+                    | #{a.changeset[f].first}
+                  div
+                    strong> To
+                    | #{a.changeset[f].last}
