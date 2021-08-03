@@ -26,4 +26,7 @@ end
   Attendee.all.sample(10).each do |a|
     a.update!(membership_type: 'Dealer', business_name: Faker::Company.name)
   end
+
+  registrant_name = "Botalotta Badges"
+  a = FactoryBot.create_list :attendee, 4, event_id: fake_event_id, event_name: fake_event_name, registrant_legal_name: registrant_name
 end

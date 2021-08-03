@@ -29,8 +29,9 @@
       = search_form_for @q do |f|
         .row.mb-3
           .col
-            = f.label :badge_name_or_legal_name_or_preferred_first_name_cont, class: 'form-label'
-            = f.search_field :badge_name_or_legal_name_or_preferred_first_name_cont, class: 'form-control'
+            = f.label :badge_name_or_legal_name_or_preferred_first_name_or_registrant_legal_name_cont, class: 'form-label' do 
+              | Any name field contains
+            = f.search_field :badge_name_or_legal_name_or_preferred_first_name_or_registrant_legal_name_cont, class: 'form-control'
         .row.mb-3 
           .col 
             = f.label :business_name, class: 'form-label'
