@@ -94,8 +94,20 @@ RSpec.describe AttendeePolicy, type: :policy do
       it { is_expected.to be_blank }
     end
 
+    describe 'read_only' do
+      let(:user) { read_only }
+
+      it { is_expected.not_to be_blank }
+    end
+    
     describe 'staff' do
       let(:user) { staff }
+
+      it { is_expected.not_to be_blank }
+    end
+
+    describe 'helpdesk' do
+      let(:user) { helpdesk }
 
       it { is_expected.not_to be_blank }
     end
