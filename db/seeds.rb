@@ -28,5 +28,5 @@ end
   end
 
   registrant_name = "Botalotta Badges"
-  a = FactoryBot.create_list :attendee, 4, event_id: fake_event_id, event_name: fake_event_name, registrant_legal_name: registrant_name
+  a = FactoryBot.create_list :attendee, 4, event_id: fake_event_id, event_name: fake_event_name, legal_name: nil, guest_badge: true, registrant_legal_name: registrant_name
 end
