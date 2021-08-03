@@ -31,8 +31,8 @@ class AttendeeImportService
       # Dealers attendee names are different
       if r['Event Ticket Name'] == 'Dealer'
         full_name = "#{r['Membership: First Name (C)']} #{r['Membership: Last Name (C)']}"
-        email = "#{r['Business: Email Address (C)']}"
-        badge_name = "#{r['Membership: Badge Name (C)']}"
+        email = (r['Business: Email Address (C)']).to_s
+        badge_name = (r['Membership: Badge Name (C)']).to_s
         datum[:legal_name] = full_name
         datum[:email] = email
         datum[:badge_name] = badge_name

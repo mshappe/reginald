@@ -125,14 +125,16 @@ class Attendee < ApplicationRecord
   def printable_membership_type
     case membership_type
     when /^Adult/
-      "ADULT"
+      'ADULT'
     when /^Teen/, /^Child/
-      "UNDER-18"
+      'UNDER-18'
     when /^Dealer/
-      "ADULT (DEALER)"
-    else
-      nil
+      'ADULT (DEALER)'
     end
+  end
+
+  def preferred_name
+    "#{preferred_first_name} #{preferred_last_name}".strip
   end
 
   def dealer?

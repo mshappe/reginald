@@ -7,11 +7,11 @@ class AttendeesController < ApplicationController
   def index
     redirect_to root_path if current_user.roles.blank?
     @q = policy_scope(Attendee).order(:id).ransack(params[:q])
-    if params[:q].present?
-      @attendees = @q.result(distinct: true).page params[:page]
-    else
-      @attendees = Attendee.none.page params[:page]
-    end
+    @attendees = if params[:q].present?
+                   @q.result(distinct: true).page params[:page]
+                 else
+                   Attendee.none.page params[:page]
+                 end
   end
 
   def show; end
