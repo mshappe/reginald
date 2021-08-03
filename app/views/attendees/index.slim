@@ -9,6 +9,9 @@
           div Fuzzy Search by Badge Name, Legal Name, or Preferred First Name
           div
             strong or
+          div Fuzzy Search by Dealer's Name
+          div 
+            strong or
           div Search by exact Badge Number
         li
           div On a fuzzy search, you may legitimately get multiple record for the same person if
@@ -28,6 +31,11 @@
           .col
             = f.label :badge_name_or_legal_name_or_preferred_first_name_cont, class: 'form-label'
             = f.search_field :badge_name_or_legal_name_or_preferred_first_name_cont, class: 'form-control'
+        .row.mb-3 
+          .col 
+            = f.label :business_name, class: 'form-label'
+              | Dealer's Business Name contains
+            = f.search_field :business_name_cont, class: 'form-control'
         .row.mb-3
           .col
             = f.label :id_eq, class: 'form-label'

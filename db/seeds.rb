@@ -23,4 +23,7 @@ end
   fake_event_name = 'THIS IS A FAKE'
   a = FactoryBot.create :attendee, event_id: fake_event_id, event_name: fake_event_name
   FactoryBot.create(:attendee_note, attendee: a, user: User.all.sample) if rand(0..5) > 3
+  Attendee.all.sample(10).each do |a|
+    a.update!(membership_type: 'Dealer', business_name: Faker::Company.name)
+  end
 end
