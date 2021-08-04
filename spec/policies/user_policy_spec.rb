@@ -8,6 +8,7 @@ RSpec.describe UserPolicy, type: :policies do
   let(:peon) { FactoryBot.create :user }
   let(:staff) { FactoryBot.create :user, :when_staff }
   let(:head) { FactoryBot.create :user, :when_head }
+  let(:helpdesk) { FactoryBot.create :user, :when_helpdesk }
   let(:admin) { FactoryBot.create :user, :when_admin }
 
   # A new user can't do anything here
@@ -16,6 +17,7 @@ RSpec.describe UserPolicy, type: :policies do
     it { is_expected.not_to permit staff }
     it { is_expected.to permit head }
     it { is_expected.to permit admin }
+    it { is_expected.to permit helpdesk }
   end
 
   describe 'Scope' do

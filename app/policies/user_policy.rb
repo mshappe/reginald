@@ -40,6 +40,6 @@ class UserPolicy < ApplicationPolicy
   protected
 
   def blessed?
-    user.has_any_role? :admin, :head
+    user.has_any_role? :admin, :head, :helpdesk
   end
 end
