@@ -72,6 +72,6 @@ class AttendeePolicy < ApplicationPolicy
   end
 
   def super_blessed?
-    user&.has_any_role? :head, :admin
+    user&.has_any_role? :helpdesk, :head, :admin
   end
 end

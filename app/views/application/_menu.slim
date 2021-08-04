@@ -6,7 +6,7 @@ nav.navbar.navbar-expand-md.navbar-light.bg-light
     #navbarMain.collapse.navbar-collapse
       ul.navbar-nav.me-autho.mb-2.mb-lg-0
         - if current_user.present?
-          - if current_user.has_any_role?(:admin, :head)
+          - if current_user.has_any_role?(:admin, :head, :helpdesk)
             li.nav-item
               = link_to 'Manage Users', users_path, class: 'nav-link'
             li.nav-item

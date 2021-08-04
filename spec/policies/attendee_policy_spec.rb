@@ -56,6 +56,7 @@ RSpec.describe AttendeePolicy, type: :policy do
     it { is_expected.not_to permit peon }
     it { is_expected.to permit admin }
     it { is_expected.to permit head }
+    it { is_expected.to permit helpdesk }
     it { is_expected.not_to permit nil }
   end
 
