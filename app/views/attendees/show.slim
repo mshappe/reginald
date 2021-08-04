@@ -90,16 +90,19 @@
       div= @attendee.address2
       div= "#{@attendee.city}, #{@attendee.state} #{@attendee.zip}"
   .row.mt-3
+    .col
+      .row
+        .col
+          strong Reg'd at
+        .col
+          div= @attendee.registered_at
+      .row 
+        .col 
+          strong Reg'd by
+        .col
+          div= @attendee.registrant_legal_name
     .col-2
-      div
-        strong Registered at
-      div
-        strong Registered by
-    .col-4
-      div= @attendee.registered_at
-      div= @attendee.registrant_legal_name
-    .col-2
-      strong NEON Attendee #
+      strong NEON #
     .col
       div= @attendee.neon_attendee_id
   .row.mt-3

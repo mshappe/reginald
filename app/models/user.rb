@@ -46,8 +46,10 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :name, presence: true
 
+  scope :unblessed, -> { where roles: nil }
+
   def can_transfer?
-    has_any_role? :helpdesk, :head, :admin
+    has_any_role? :staff, :helpdesk, :head, :admin
   end
 
   VALID_ROLES = %i[read_only staff helpdesk head admin].freeze

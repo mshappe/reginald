@@ -18,6 +18,10 @@ users.each do |u|
   u.add_role(:staff)
 end
 
+# Create an unblessed user
+FactoryBot.create :user
+u.confirm
+
 100.times.each do
   fake_event_id = 42
   fake_event_name = 'THIS IS A FAKE'
