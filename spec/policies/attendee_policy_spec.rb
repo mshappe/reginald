@@ -23,7 +23,7 @@ RSpec.describe AttendeePolicy, type: :policy do
   end
 
   permissions :edit?, :update? do
-    it { is_expected.not_to permit staff }
+    it { is_expected.to permit staff }
     it { is_expected.to permit head }
     it { is_expected.to permit admin }
 
