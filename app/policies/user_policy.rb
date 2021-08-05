@@ -3,7 +3,7 @@
 class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      return scope.none unless user&.has_any_role? :admin, :head
+      return scope.none unless user&.has_any_role? :admin, :head, :helpdesk
 
       scope.all
     end
