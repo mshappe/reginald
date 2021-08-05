@@ -12,6 +12,10 @@ user = User.create(email: 'squid@squid.co', password: 'llamaface', password_conf
 user.confirm
 user.add_role(:admin)
 
+staff = User.create(email: 'llama@llama.co', password: 'llamaface', password_confirmation: 'llamaface')
+staff.confirm
+staff.add_role(:staff)
+
 users = FactoryBot.create_list :user, 10
 users.each do |u|
   u.confirm
@@ -19,7 +23,7 @@ users.each do |u|
 end
 
 # Create an unblessed user
-FactoryBot.create :user
+u = FactoryBot.create :user
 u.confirm
 
 100.times.each do

@@ -87,7 +87,7 @@ class AttendeesController < ApplicationController
   def attendee_params
     permit = %i[pay_type file]
 
-    if current_user.has_any_role? :helpdesk, :head, :admin
+    if current_user.has_any_role? :staff, :helpdesk, :head, :admin
       permit += %i[address1 address2 area_code badge_name
                    city country email emergency_contact
                    guest_badge legal_name membership_type
